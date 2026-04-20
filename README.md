@@ -2,95 +2,94 @@
 
 <img src="./public/docs/logo.png" width="180" alt="AxonHR Logo" />
 
-## Project Overview
-AxonHR is a high-fidelity workflow automation designer built for the HR Automation Case Study. This document outlines how all project deliverables and functional requirements have been satisfied.
+## Introduction
+The AxonHR Workflow Designer is a high-fidelity prototype developed for the HR Automation Case Study. It provides a formal environment for the design, validation, and simulation of operational HR workflows through an interactive canvas interface.
 
 ---
 
-## 1. Deliverables Checklist
-The following components are present in the provided repository:
-*   [x] **React Application**: Built with React 18 and Vite for optimized performance.
-*   [x] **React Flow Canvas**: A highly interactive workspace featuring 12+ custom node types.
-*   [x] **Node Configuration Forms**: Type-safe, dynamic editing panels for every node type.
-*   [x] **Mock API Integration**: A lightweight async API layer simulating backend services.
-*   [x] **Sandbox Simulation Panel**: A dedicated environment for graph testing and execution logs.
-*   [x] **Architecture Documentation**: Comprehensive README detailing design choices and stack.
+## 1. Project Deliverables
+The following components are fully implemented within this repository:
+1. React 18 Application (Vite framework)
+2. React Flow Canvas with 12+ Specialized Custom Nodes
+3. Node Configuration Forms with Dynamic Field Injection
+4. Local Mock API Integration
+5. Sandbox Simulation Panel with Execution Trace
+6. Technical Documentation covering Architecture and Rationale
 
 ---
 
 ## 2. Functional Requirements
-The prototype fulfills all technical specifications for the HR Workflow Designer:
 
-### 2.1 Workflow Canvas Actions
-![Canvas Interface](./public/docs/req_canvas.png)
-*   **Drag & Drop**: Seamlessly add nodes from the categorized sidebar.
-*   **Edge Connectivity**: Create logical connections between HR steps.
-*   **State Management**: Select nodes for focused editing via the Side Panel.
-*   **Lifecycle Control**: Full support for node/edge deletion and canvas clearing.
-*   **Real-time Validation**: Background constraints (e.g., ensuring a Start node exists).
+### 2.1 Workflow Canvas Operations
+<img src="./public/docs/req_canvas.png" width="800" alt="Canvas Interface" />
 
-### 2.2 Node Configuration Details (Key Requirement)
-Every node features a specialized editing form with controlled components and Zod validation:
+The application implements a multi-functional workspace supporting:
+* Drag-and-drop node instantiation from a categorized sidebar.
+* Logical edge connectivity between HR procedural steps.
+* Targeted node selection for real-time property configuration.
+* Structural lifecycle management (Delete nodes/edges and Clear Canvas).
+* Background graph validation for structural integrity.
 
-| Node Type | Implementation Detail |
-| :--- | :--- |
-| **Start Node** | Configurable Title and Metadata (Key-Value Editor). |
-| **Task Node** | Title (Req), Description, Assignee, and Date integration. |
-| **Approval Node** | Manager/HRBP/Director Role selection + Auto-Approve Threshold. |
-| **Automated Step** | Action selection from API list + Dynamic Parameter generation. |
-| **End Node** | Custom End Message + Performance Summary Toggle flag. |
+### 2.2 Domain-Specific Node Registry
+The system provides specialized nodes with rigorous data field requirements:
 
----
-
-## 3. Mock API Layer Implementation
-A lightweight API client is implemented in `src/api/client.ts` to simulate microservices:
-
-*   **`GET /automations`**: Returns a list of mock automated actions (Send Email, Generate Doc, etc.) with their required parameters. These define the dynamic UI of the Automated Step nodes.
-*   **`POST /simulate`**: Receives the serialized workflow JSON and returns a step-by-step mock execution trace.
+* **Start Node**: Title and Metadata support.
+* **Task Node**: Mandatory Title, Description, Assignee, and Date fields.
+* **Approval Node**: Role-based routing (Manager, HRBP, Director) with auto-approve logic.
+* **Automated Step**: Dynamic action mapping from the mock API response.
+* **End Node**: Performance summary flags and workflow termination logic.
 
 ---
 
-## 4. Sandbox Simulation
-![Simulation Results](./public/docs/Sandbox.png)
+## 3. Sandbox Simulation
+<img src="./public/docs/Sandbox.png" width="800" alt="Simulation Results" />
 
-The **Sandbox Simulation** panel facilitates end-to-end workflow testing:
-*   **Graph Serialization**: Converts the React Flow state into a clean JSON structure for API transfer.
-*   **Validation Engine**: Detects structural errors (loops, orphaned nodes) before execution.
-*   **Execution Log**: Provides a timeline UI showing a step-by-step trace of node statuses and durations.
-*   **Logic Sorting**: Uses **Topological Sorting** to ensure nodes are executed in the correct dependency order.
-
----
-
-## 5. Architectural Standards
-The project is designed with scalability and modularity as core priorities:
-*   **Folder Structure**: Clear separation between `components`, `store`, `types`, and `api`.
-*   **Logic Separation**: Canvas state (React Flow) is decoupled from data logic (Zustand) and API mocks.
-*   **Reusable Abstractions**: The `NodeShell` component and `NODE_REGISTRY` allow for effortless addition of new node types.
-*   **Type Safety**: Comprehensive TypeScript interfaces for all nodes, edges, and simulation results.
+The Sandbox Simulation environment provides formal testing capabilities:
+* **Serialization**: Complete graph state conversion to JSON for API delivery.
+* **Backend Integration**: Direct communication with the mock /simulate endpoint.
+* **Execution Trace**: Step-by-step timeline UI displaying node status and duration.
+* **Structural Auditing**: Automated detection of circular loops and orphaned logic.
 
 ---
 
-## 6. Premium "Power User" Features (Add-ons)
+## 4. Premium Add-on Features
 
-### Spotlight Command Center (`⌘K`)
-![Spotlight Search](./public/docs/SpotlightSearch.png)
-A unified command palette that allows for instant node insertion, template application, and canvas navigation.
+### Command Palette & Quick Build
+<img src="./public/docs/SpotlightSearch.png" width="800" alt="Spotlight Search" />
+<img src="./public/docs/QuickBuild.png" width="800" alt="Quick Build" />
 
-### Natural Language "Quick Build"
-![Quick Build](./public/docs/QuickBuild.png)
-An innovative text-to-graph parser that transforms semantic input (e.g., `Start -> Task -> Approval -> End`) into functional graph structures.
+The Spotlight Command Center (`⌘K`) enables rapid canvas interaction, while the NLP Quick Build system allows for text-to-graph workflow generation.
 
-### Intelligence Summary Cloud
-![Summary Cloud](./public/docs/Summary.png)
-A context-aware summary engine that translates complex graph logic into human-readable project briefs on hover.
+### Artificial Intelligence Summarization
+<img src="./public/docs/Summary.png" width="800" alt="Summary Cloud" />
 
-### Global Templates Library
-![Templates Library](./public/docs/Templates.png)
-Pre-configured HR patterns (Onboarding, Leave Approval) that can be applied with a single click via the templates menu.
+A context-aware summary engine translates complex node networks into human-readable briefs for stakeholder review.
 
 ---
 
-## 7. Operational Guide
+## 5. Technical Architecture
+The application follows a modular, three-tier architecture:
+1. **View Layer**: React 18 and React Flow manage the visual graph and UI components.
+2. **State Layer**: Zustand with Immer middleware provides a centralized, immutable store for graph data and history snapshots.
+3. **Mock API Layer**: A standalone client implementation simulates asynchronous backend services with topological sorting logic.
+
+---
+
+## 6. Design Choices
+* **Atomic Component Design**: Every node type inherits from a base `NodeShell`, ensuring visual consistency and centralized management of interaction states (Selected, Running, Failed).
+* **Controlled Form Pattern**: Configuration forms use controlled inputs with Zod schema validation to prevent malformed data from entering the graph.
+* **Topological Execution**: Simulation results are determined using a topological sort algorithm, ensuring that the execution order strictly follows the logical flow defined by the user.
+
+---
+
+## 7. Technical Assumptions
+* **DAG Limitation**: The simulation engine assumes the workflow is a Directed Acyclic Graph (DAG). If cycles are detected, simulation is gated to prevent infinite execution loops.
+* **Connectivity**: The system assumes every workflow must have exactly one Start node to serve as a valid entry point for the simulation engine.
+* **Local Persistence**: Data is managed in-memory via the Zustand store; persistent backend storage was explicitly excluded per the project brief.
+
+---
+
+## 8. Operational Guide
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -100,7 +99,7 @@ Pre-configured HR patterns (Onboarding, Leave Approval) that can be applied with
 | `Del` | Delete selected element |
 | `Esc` | Clear selection |
 
-### Local Setup
-1. `npm install`
-2. `npm run dev`
-3. Open `http://localhost:5173`
+### Setup Instructions
+1. Run `npm install` to resolve dependencies.
+2. Run `npm run dev` to start the interface.
+3. Access the designer at `http://localhost:5173`.
