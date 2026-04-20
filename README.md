@@ -44,48 +44,9 @@ The system provides specialized nodes with rigorous data field requirements:
 
 ---
 
----
+## 3. Technical Architecture
 
-## 3. Sandbox Simulation & Execution Feedback
-<img src="./public/docs/Sandbox.png" width="800" alt="Simulation Results" />
-
-To provide a fully reactive experience, the designer includes a real-time **Sandbox Simulation** feedback loop:
-
-### Execution Visuals
-*   **Live Status**: Nodes on the canvas respond instantly to logic execution with verified status icons (blue for running, green for passed, red for failed).
-*   **Tracing**: The execution log provides a high-fidelity audit trail for every node in the graph.
-
-<img src="./public/docs/Simulation_Running.png" width="400" alt="Simulation Running" /><img src="./public/docs/Simulation_Success.png" width="400" alt="Simulation Success" />
-
-### Technical Logic
-* **Serialization**: Complete graph state conversion to JSON for API delivery.
-* **Backend Integration**: Direct communication with the mock /simulate endpoint.
-* **Execution Trace**: Step-by-step timeline UI displaying node status and duration.
-* **Structural Auditing**: Automated detection of circular loops and orphaned logic.
-
----
-
-## 4. Premium Add-on Features
-
-### Templates & Quick Start patterns
-<img src="./public/docs/Templates.png" width="800" alt="Templates Library" />
-
-### Command Palette & Quick Build
-<img src="./public/docs/SpotlightSearch.png" width="800" alt="Spotlight Search" />
-<img src="./public/docs/QuickBuild.png" width="800" alt="Quick Build" />
-
-The Spotlight Command Center (`⌘K`) enables rapid canvas interaction, while the NLP Quick Build system allows for text-to-graph workflow generation.
-
-### Artificial Intelligence Summarization
-<img src="./public/docs/Summary.png" width="800" alt="Summary Cloud" />
-
-A context-aware summary engine translates complex node networks into human-readable briefs for stakeholder review.
-
----
-
-## 5. Technical Architecture
-
-The application following a modular three-tier architecture, as visualized below:
+The application follows a modular three-tier architecture, as visualized below:
 
 ```mermaid
 graph TD
@@ -114,17 +75,56 @@ graph TD
 
 ---
 
-## 6. Design Choices
+## 4. Input & Output (Execution Workflow)
+
+The Sandbox Simulation environment provides a robust testing loop for validating HR logic.
+
+### 4.1 Input Initialization
+<img src="./public/docs/Simulation_Running.png" width="800" alt="Simulation Running" />
+
+* **Input Data**: The entire canvas state is serialized into a directed graph JSON.
+* **Processing**: When the user triggers "Run Simulation", the store transitions into a `running` state. Nodes are processed one-by-one following the topological order determined by the execution engine.
+
+### 4.2 Output & Execution Results
+<img src="./public/docs/Simulation_Success.png" width="800" alt="Simulation Success" />
+
+* **Visual Output**: The canvas provides real-time feedback via status icons on each node (Spinners -> Verified Checks).
+* **Execution Log**: A detailed trace is generated including:
+    * **Node-Level Success**: Tracking which steps passed or were skipped.
+    * **Performance Metrics**: Execution duration for each automated or human step.
+    * **Final Summary**: An intelligence-driven summary of the completed workflow.
+
+---
+
+## 5. Design Choices
 * **Atomic Component Design**: Every node type inherits from a base `NodeShell`, ensuring visual consistency and centralized management of interaction states (Selected, Running, Failed).
 * **Controlled Form Pattern**: Configuration forms use controlled inputs with Zod schema validation to prevent malformed data from entering the graph.
 * **Topological Execution**: Simulation results are determined using a topological sort algorithm, ensuring that the execution order strictly follows the logical flow defined by the user.
 
 ---
 
-## 7. Technical Assumptions
+## 6. Technical Assumptions
 * **DAG Limitation**: The simulation engine assumes the workflow is a Directed Acyclic Graph (DAG). If cycles are detected, simulation is gated to prevent infinite execution loops.
 * **Connectivity**: The system assumes every workflow must have exactly one Start node to serve as a valid entry point for the simulation engine.
 * **Local Persistence**: Data is managed in-memory via the Zustand store; persistent backend storage was explicitly excluded per the project brief.
+
+---
+
+## 7. Premium Add-on Features
+
+### Templates & Quick Start patterns
+<img src="./public/docs/Templates.png" width="800" alt="Templates Library" />
+
+### Command Palette & Quick Build
+<img src="./public/docs/SpotlightSearch.png" width="800" alt="Spotlight Search" />
+<img src="./public/docs/QuickBuild.png" width="800" alt="Quick Build" />
+
+The Spotlight Command Center (`⌘K`) enables rapid canvas interaction, while the NLP Quick Build system allows for text-to-graph workflow generation.
+
+### Artificial Intelligence Summarization
+<img src="./public/docs/Summary.png" width="800" alt="Summary Cloud" />
+
+A context-aware summary engine translates complex node networks into human-readable briefs for stakeholder review.
 
 ---
 
