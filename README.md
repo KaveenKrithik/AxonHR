@@ -1,4 +1,6 @@
-# AxonHR | Workflow Designer Prototype
+# AxonHR | Workflow Builder for HR
+
+![AxonHR Logo](./public/docs/logo.png)
 
 AxonHR is a high-fidelity, production-grade HR workflow automation module built for Tredence Analytics. It enables HR administrators to design, validate, and simulate complex internal processes such as onboarding and leave approvals through an intuitive, keyboard-first interface.
 
@@ -6,31 +8,37 @@ AxonHR is a high-fidelity, production-grade HR workflow automation module built 
 
 ## Technical Architecture
 
-### 1. State Management Strategy
+### 1. Workflow Life Cycle
+The following diagram illustrates how a user-defined workflow moves from the design canvas through to the simulation engine.
+
+```mermaid
+graph LR
+    A[Start Node] --> B[Task/Approval Node]
+    B --> C{Auto-Validation}
+    C -- Valid --> D[Topological Sort]
+    C -- Invalid --> E[Visual Error State]
+    D --> F[Mock API Simulation]
+    F --> G[Execution Logs / Analytics]
+```
+
+### 2. State Management Strategy
 The application utilizes a centralized **Zustand** store with **Immer** middleware. This architecture provides:
 *   **Atomic Updates**: Node data and edge connections are managed in a single source of truth.
 *   **Command History**: A snapshot-based stack allows for infinite **Undo/Redo** capabilities.
 *   **Serialization**: The entire workflow graph is serialized into a clean JSON structure for API consumption and persistence.
 
-### 2. Component Design System
+### 3. Component Design System
 We implemented a **Modular Node Architecture** based on a shared `NodeShell` component.
-*   **Custom Form Generators**: The configuration panel uses a dynamic field-mapping system. For example, the Automated Step Node fetches its schema from the Mock API and renders inputs based on the required parameters (e.g., recipient, subject).
+*   **Custom Form Generators**: The configuration panel uses a dynamic field-mapping system. For example, the Automated Step Node fetches its schema from the Mock API and renders inputs based on the required parameters.
 *   **Raycast-Styled UI**: The interface follows a premium dark-mode aesthetic with sub-pixel borders and glassmorphic elements.
-
-### 3. Mock API & Logic Layer
-The API layer (`src/api/client.ts`) simulates a real backend with:
-*   **GET /automations**: Serves a registry of system-triggered actions and their metadata.
-*   **POST /simulate**: A robust engine that performs **Topological Sorting** to determine execution order and **Graph Validation** to prevent logical cycles or disconnected nodes.
-*   **Latency Simulation**: Every request includes a simulated delay to test loading states and UI responsiveness.
 
 ---
 
 ## Core Features & Enhancements
 
-### Interactive Canvas
-A React Flow powered workspace supporting drag-and-drop node placement, smooth edge connections, and precise zoom/pan controls.
-*   **Refined Nodes**: Start, Task, Approval, Automation, and End nodes with specialized shapes and connection handles.
-*   **Visual Validation**: Nodes change status in real-time based on configuration completeness.
+### Interactive Canvas & Toolbar
+![Floating Toolbar](./public/docs/toolbar.png)
+A React Flow powered workspace supporting drag-and-drop node placement, smooth edge connections, and precise zoom/pan controls via our specialized floating toolbar.
 
 ### Power-User Spotlight Search
 A dual-pane command palette (`Cmd + K`) for instant discovery of nodes and templates, featuring high-contrast previews and keyboard navigation.
@@ -71,11 +79,3 @@ src/
 *   **Assumption**: No backend persistence was required, so we utilized localStorage for onboarding state and a memory-based store for workflows.
 *   **Decision**: We chose **Zustand** over Redux for its lightweight footprint and excellent performance with React Flow's frequent state updates.
 *   **Branding**: The application was rebranded to **Greptile Green** (`#00D084`) to represent a high-tech, modern SaaS aesthetic.
-
----
-
-## Future Roadmap
-
-*   **Version History**: Implementing a git-like branching system for workflow drafts.
-*   **Auto-Layout**: Integration with ELK.js or Dagre for complex graph organization.
-*   **Real Integration**: Moving from MSW/Local Mocks to a live Node.js or Go backend.
