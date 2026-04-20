@@ -67,15 +67,40 @@ The project is designed with scalability and modularity as core priorities:
 *   **Logic Separation**: Canvas state (React Flow) is decoupled from data logic (Zustand) and API mocks.
 *   **Reusable Abstractions**: The `NodeShell` component and `NODE_REGISTRY` allow for effortless addition of new node types.
 *   **Type Safety**: Comprehensive TypeScript interfaces for all nodes, edges, and simulation results.
-*   **State Integrity**: Immer-powered state management ensures 100% reliable Undo/Redo cycles and history snapshots.
 
 ---
 
-## 6. Power User Features (Value Adds)
-*   **Spotlight Command Center (`⌘K`)**: Instant search and node insertion.
-*   **Quick Build Parser**: Text-to-graph generation system.
-*   **Summary Intelligence Cloud**: Hover-aware plaintext workflow summaries.
+## 6. Premium "Power User" Features (Add-ons)
+
+### Spotlight Command Center (`⌘K`)
+![Spotlight Search](./public/docs/SpotlightSearch.png)
+A unified command palette that allows for instant node insertion, template application, and canvas navigation.
+
+### Natural Language "Quick Build"
+![Quick Build](./public/docs/QuickBuild.png)
+An innovative text-to-graph parser that transforms semantic input (e.g., `Start -> Task -> Approval -> End`) into functional graph structures.
+
+### Intelligence Summary Cloud
+![Summary Cloud](./public/docs/Summary.png)
+A context-aware summary engine that translates complex graph logic into human-readable project briefs on hover.
+
+### Global Templates Library
+![Templates Library](./public/docs/Templates.png)
+Pre-configured HR patterns (Onboarding, Leave Approval) that can be applied with a single click via the templates menu.
 
 ---
 
-Developed by the AxonHR Engineering Team for Tredence Analytics.
+## 7. Operational Guide
+
+| Shortcut | Action |
+| :--- | :--- |
+| `⌘K` | Command Palette (Search/Build) |
+| `⌘Z` / `⌘Y` | Undo / Redo timeline |
+| `S` / `P` | Selection / Pan Mode |
+| `Del` | Delete selected element |
+| `Esc` | Clear selection |
+
+### Local Setup
+1. `npm install`
+2. `npm run dev`
+3. Open `http://localhost:5173`
