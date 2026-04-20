@@ -79,20 +79,23 @@ graph TD
 
 The Sandbox Simulation environment provides a robust testing loop for validating HR logic.
 
-### 4.1 Input Initialization
+### 4.1 Data Entry (Node Input)
 <img src="./public/docs/Simulation_Running.png" width="800" alt="Simulation Running" />
 
-* **Input Data**: The entire canvas state is serialized into a directed graph JSON.
-* **Processing**: When the user triggers "Run Simulation", the store transitions into a `running` state. Nodes are processed one-by-one following the topological order determined by the execution engine.
+*   **Property Injection (Input)**: When a node is selected, the **Node Configuration Panel** serves as the primary input interface. Users define operational parameters such as:
+    *   **Workflow Metadata**: High-level triggers and starting conditions.
+    *   **Logic Gates**: Approver roles and auto-approval thresholds that dictate branching logic.
+    *   **Automation Parameters**: Dynamic fields (e.g., `recipient`, `subject`) fetched from the mock API.
+*   **State Locking**: These inputs are stored reactively within the node's `data` object, ensuring the workflow JSON is always "simulation-ready."
 
-### 4.2 Output & Execution Results
+### 4.2 Simulation Processing & Results (Output)
 <img src="./public/docs/Simulation_Success.png" width="800" alt="Simulation Success" />
 
-* **Visual Output**: The canvas provides real-time feedback via status icons on each node (Spinners -> Verified Checks).
-* **Execution Log**: A detailed trace is generated including:
-    * **Node-Level Success**: Tracking which steps passed or were skipped.
-    * **Performance Metrics**: Execution duration for each automated or human step.
-    * **Final Summary**: An intelligence-driven summary of the completed workflow.
+*   **Logic Transformation**: During simulation, the engine ingests these properties and transforms them into executable steps.
+*   **Audit Output**: The resulting **Execution Log** is the primary output, providing:
+    *   **Status Indicators**: Mapping property-based logic (e.g., Threshold > 80) to `passed` or `failed` statuses.
+    *   **Trace Records**: A chronological log of every action, including parameters used during that specific execution cycle.
+    *   **Intelligence Summary**: A consolidated "executive summary" generated based on the final graph state properties.
 
 ---
 
