@@ -7,11 +7,14 @@ const TYPE_KEYWORDS: Array<{ kw: string[]; type: NodeType }> = [
   { kw: ["end", "finish", "done", "complete"], type: "end" },
   { kw: ["approve", "approval", "review", "signoff"], type: "approval" },
   { kw: ["human", "manager"], type: "humanApproval" },
-  { kw: ["email", "notify", "notification", "slack", "alert"], type: "notification" },
+  { kw: ["email", "mail"], type: "email" },
+  { kw: ["slack", "msg", "message"], type: "slack" },
+  { kw: ["notify", "notification", "alert", "bell"], type: "notification" },
   { kw: ["onboard", "hire", "add employee", "addemployee"], type: "addEmployee" },
   { kw: ["leave", "vacation", "pto"], type: "processLeave" },
   { kw: ["verify", "document", "doc"], type: "verifyDocument" },
   { kw: ["automate", "automation", "run", "action"], type: "automation" },
+  { kw: ["approver", "human", "manager"], type: "humanApproval" },
 ];
 
 function matchType(token: string): NodeType {
