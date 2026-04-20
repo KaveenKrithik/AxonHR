@@ -30,9 +30,10 @@ The application implements a multi-functional workspace supporting:
 * Structural lifecycle management (Delete nodes/edges and Clear Canvas).
 * Background graph validation for structural integrity.
 
-### 2.2 Domain-Specific Node Registry
-The system provides specialized nodes with rigorous data field requirements:
+### 2.2 Node Configuration & Data Modeling
+<img src="./public/docs/req_forms.png" width="800" alt="Node Configuration Forms" />
 
+The system provides specialized nodes with rigorous data field requirements:
 * **Start Node**: Title and Metadata support.
 * **Task Node**: Mandatory Title, Description, Assignee, and Date fields.
 * **Approval Node**: Role-based routing (Manager, HRBP, Director) with auto-approve logic.
@@ -54,6 +55,9 @@ The Sandbox Simulation environment provides formal testing capabilities:
 
 ## 4. Premium Add-on Features
 
+### Templates & Quick Start patterns
+<img src="./public/docs/Templates.png" width="800" alt="Templates Library" />
+
 ### Command Palette & Quick Build
 <img src="./public/docs/SpotlightSearch.png" width="800" alt="Spotlight Search" />
 <img src="./public/docs/QuickBuild.png" width="800" alt="Quick Build" />
@@ -68,7 +72,30 @@ A context-aware summary engine translates complex node networks into human-reada
 ---
 
 ## 5. Technical Architecture
-The application follows a modular, three-tier architecture:
+
+The application following a modular three-tier architecture, as visualized below:
+
+```mermaid
+graph TD
+    A[React View Layer] -->|Dispatch Actions| B[Zustand Central Store]
+    B -->|State Snapshots| C[History/Undo Management]
+    B -->|Serialize Graph| D[Simulation Engine]
+    D -->|Topological Sort| E[Mock API Client]
+    E -->|Execution Trace| B
+    B -->|Reactive Update| A
+    
+    subgraph UI Components
+        F[React Flow Canvas]
+        G[Dynamic Form Panel]
+        H[Spotlight Search]
+    end
+    
+    A --- F
+    A --- G
+    A --- H
+```
+
+### Architecture Overview
 1. **View Layer**: React 18 and React Flow manage the visual graph and UI components.
 2. **State Layer**: Zustand with Immer middleware provides a centralized, immutable store for graph data and history snapshots.
 3. **Mock API Layer**: A standalone client implementation simulates asynchronous backend services with topological sorting logic.
