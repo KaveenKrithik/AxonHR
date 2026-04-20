@@ -120,9 +120,9 @@ const onboarding = {
   description: "6-step new hire onboarding flow",
   nodes: [
     mkNode("o1", "start", { x: 280, y: 40 }, { label: "Start", title: "New hire onboarding", metadata: {} }),
-    mkNode("o2", "addEmployee", { x: 280, y: 280 }, { label: "Add Employee", employeeName: "New Hire", email: "new.hire@company.com", role: "Engineer", department: "Engineering" }),
+    mkNode("o2", "addEmployee", { x: 280, y: 280 }, { label: "Add Employee", employeeName: "Kaveen", email: "kaveen@company.com", role: "Engineer", department: "Engineering" }),
     mkNode("o3", "automation", { x: 280, y: 520 }, { label: "Send welcome kit", title: "Welcome kit", actionId: "send_welcome_kit", actionParams: {} }),
-    mkNode("o4", "task", { x: 280, y: 760 }, { label: "Setup laptop", title: "Provision equipment", priority: "High", customFields: {} }),
+    mkNode("o4", "task", { x: 280, y: 760 }, { label: "Setup laptop", title: "Provision equipment", assignee: "IT Team", priority: "High", customFields: {} }),
     mkNode("o5", "humanApproval", { x: 280, y: 1000 }, { label: "Manager confirms", title: "Manager confirms ready", approverName: "John Lead", approverEmail: "john@company.com", notifyVia: ["email"] }),
     mkNode("o6", "end", { x: 280, y: 1240 }, { label: "End", endMessage: "Employee onboarded", showSummary: true }),
   ] as WorkflowNode[],
@@ -131,7 +131,7 @@ const onboarding = {
     { id: "oe2", source: "o2", target: "o3", type: "custom" },
     { id: "oe3", source: "o3", target: "o4", type: "custom" },
     { id: "oe4", source: "o4", target: "o5", type: "custom" },
-    { id: "oe5", source: "o5", target: "o6", type: "custom" },
+    { id: "oe5", source: "o5", target: "o6", type: "custom", label: "Approved" },
   ] as WorkflowEdge[],
 };
 
@@ -141,14 +141,14 @@ const leave = {
   description: "Leave request with manager approval",
   nodes: [
     mkNode("l1", "start", { x: 280, y: 40 }, { label: "Start", title: "Leave request", metadata: {} }),
-    mkNode("l2", "processLeave", { x: 280, y: 280 }, { label: "Process leave", leaveType: "Annual", daysRequested: 5, approverId: "Manager" }),
+    mkNode("l2", "processLeave", { x: 280, y: 280 }, { label: "Process leave", leaveType: "Annual", daysRequested: 5, approverId: "Direct Manager" }),
     mkNode("l3", "approval", { x: 280, y: 520 }, { label: "Manager approval", title: "Approve leave", approverRole: "Manager", notifyVia: ["email"], autoApproveThreshold: 0 }),
     mkNode("l4", "end", { x: 280, y: 760 }, { label: "End", endMessage: "Leave processed", showSummary: true }),
   ] as WorkflowNode[],
   edges: [
     { id: "le1", source: "l1", target: "l2", type: "custom" },
     { id: "le2", source: "l2", target: "l3", type: "custom" },
-    { id: "le3", source: "l3", target: "l4", type: "custom" },
+    { id: "le3", source: "l3", target: "l4", type: "custom", label: "Yes" },
   ] as WorkflowEdge[],
 };
 
@@ -166,7 +166,7 @@ const docverify = {
   edges: [
     { id: "de1", source: "d1", target: "d2", type: "custom" },
     { id: "de2", source: "d2", target: "d3", type: "custom" },
-    { id: "de3", source: "d3", target: "d4", type: "custom" },
+    { id: "de3", source: "d3", target: "d4", type: "custom", label: "Approved" },
     { id: "de4", source: "d4", target: "d5", type: "custom" },
   ] as WorkflowEdge[],
 };
@@ -177,9 +177,9 @@ const offboarding = {
   description: "Standard exit process",
   nodes: [
     mkNode("f1", "start", { x: 280, y: 40 }, { label: "Start", title: "Offboarding", metadata: {} }),
-    mkNode("f2", "task", { x: 280, y: 280 }, { label: "Collect equipment", title: "Equipment return", priority: "High", customFields: {} }),
-    mkNode("f3", "automation", { x: 280, y: 520 }, { label: "Revoke access", title: "Revoke SSO", actionId: "add_to_hris", actionParams: {} }),
-    mkNode("f4", "notification", { x: 280, y: 760 }, { label: "Notify team", title: "Notify team", channel: "slack", recipients: ["#hr-team"], message: "Teammate is leaving" }),
+    mkNode("f2", "task", { x: 280, y: 280 }, { label: "Collect equipment", title: "Equipment return", assignee: "Facilities", priority: "High", customFields: {} }),
+    mkNode("f3", "automation", { x: 280, y: 520 }, { label: "Revoke access", title: "Revoke SSO", actionId: "send_slack", actionParams: { channel: "#it-admin", message: "User access revoked" } }),
+    mkNode("f4", "notification", { x: 280, y: 760 }, { label: "Notify team", title: "Notify team", channel: "slack", recipients: ["#hr-team"], message: "Employee offboarding finalized" }),
     mkNode("f5", "end", { x: 280, y: 1000 }, { label: "End", endMessage: "Offboarding complete", showSummary: true }),
   ] as WorkflowNode[],
   edges: [
