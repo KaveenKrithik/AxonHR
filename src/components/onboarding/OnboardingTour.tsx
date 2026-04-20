@@ -66,7 +66,10 @@ export function OnboardingTour() {
   const closeSpotlight = useUIStore((s) => s.closeSpotlight);
 
   useEffect(() => {
-    setTimeout(() => setCurrentStep(0), 1000);
+    const hasSeen = localStorage.getItem("axon_has_seen_tour");
+    if (!hasSeen) {
+      setTimeout(() => setCurrentStep(0), 1000);
+    }
   }, []);
 
   useEffect(() => {
@@ -93,6 +96,7 @@ export function OnboardingTour() {
   const step = STEPS[currentStep];
 
   const finish = () => {
+    localStorage.setItem("axon_has_seen_tour", "true");
     setCurrentStep(-1);
   };
 
