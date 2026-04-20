@@ -114,7 +114,7 @@ export function validateWorkflow(
   }
 
   nodes
-    .filter((n) => n.type === "approval" || n.type === "humanApproval")
+    .filter((n) => n.type === "approval")
     .forEach((n) => {
       const out = edges.filter((e) => e.source === n.id);
       if (out.length < 2) {

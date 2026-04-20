@@ -160,7 +160,7 @@ const docverify = {
     mkNode("d1", "start", { x: 280, y: 40 }, { label: "Start", title: "Doc verification", metadata: {} }),
     mkNode("d2", "verifyDocument", { x: 280, y: 280 }, { label: "Verify ID", documentType: "ID", verifiedBy: "HR Specialist" }),
     mkNode("d3", "approval", { x: 280, y: 520 }, { label: "HRBP review", title: "HR review", approverRole: "HRBP", notifyVia: ["email"], autoApproveThreshold: 0 }),
-    mkNode("d4", "notification", { x: 280, y: 760 }, { label: "Notify employee", title: "Email result", channel: "email", recipients: [], message: "Your document has been verified" }),
+    mkNode("d4", "notification", { x: 280, y: 760 }, { label: "Notify employee", title: "Email result", channel: "email", recipients: ["employee@company.com"], message: "Your document has been verified" }),
     mkNode("d5", "end", { x: 280, y: 1000 }, { label: "End", endMessage: "Verification complete", showSummary: true }),
   ] as WorkflowNode[],
   edges: [
@@ -179,7 +179,7 @@ const offboarding = {
     mkNode("f1", "start", { x: 280, y: 40 }, { label: "Start", title: "Offboarding", metadata: {} }),
     mkNode("f2", "task", { x: 280, y: 280 }, { label: "Collect equipment", title: "Equipment return", priority: "High", customFields: {} }),
     mkNode("f3", "automation", { x: 280, y: 520 }, { label: "Revoke access", title: "Revoke SSO", actionId: "add_to_hris", actionParams: {} }),
-    mkNode("f4", "notification", { x: 280, y: 760 }, { label: "Notify team", title: "Notify team", channel: "slack", recipients: [], message: "Teammate is leaving" }),
+    mkNode("f4", "notification", { x: 280, y: 760 }, { label: "Notify team", title: "Notify team", channel: "slack", recipients: ["#hr-team"], message: "Teammate is leaving" }),
     mkNode("f5", "end", { x: 280, y: 1000 }, { label: "End", endMessage: "Offboarding complete", showSummary: true }),
   ] as WorkflowNode[],
   edges: [
