@@ -42,6 +42,12 @@ The system provides specialized nodes with rigorous data field requirements:
 * **Automated Step**: Dynamic action mapping from the mock API response.
 * **End Node**: Performance summary flags and workflow termination logic.
 
+### 2.3 Communication Integration (Email & Slack)
+The designer includes dedicated nodes for enterprise communication:
+* **Email Node**: Configurable recipient, subject, and body with SMTP credential linking.
+* **Slack Node**: Direct channel targeting and message formatting for instant team updates.
+* **Notification Node**: Multi-channel (Both) delivery system for critical HR alerts.
+
 ---
 
 ## 3. Technical Architecture
@@ -79,37 +85,33 @@ graph TD
 
 The Sandbox Simulation environment provides a robust testing loop for validating HR logic.
 
-### 4.1 Data Entry (Node Input)
-<img src="./public/docs/Simulation_Running.png" width="800" alt="Simulation Running" />
+### 4.1 Property Input & Execution Output
+The system transforms user-defined properties (Inputs) into actionable execution logs (Outputs).
 
-*   **Property Injection (Input)**: When a node is selected, the **Node Configuration Panel** serves as the primary input interface. Users define operational parameters such as:
-    *   **Workflow Metadata**: High-level triggers and starting conditions.
-    *   **Logic Gates**: Approver roles and auto-approval thresholds that dictate branching logic.
-    *   **Automation Parameters**: Dynamic fields (e.g., `recipient`, `subject`) fetched from the mock API.
-*   **State Locking**: These inputs are stored reactively within the node's `data` object, ensuring the workflow JSON is always "simulation-ready."
+**Example Scenario: Employee Onboarding**
+*   **Input**: The user selects the *Add Employee* node and sets the `employeeName` property to **"Kaveen"** and `role` to **"Engineer"**.
+*   **Engine Logic**: Upon running the simulation, the system ingests this state and validates the parameters.
+*   **Output**: The Simulation Panel outputs a success state: *"Employee Kaveen successfully added as Engineer"*, appearing in the formal execution log with a timestamp and duration.
 
-### 4.2 Simulation Processing & Results (Output)
-<img src="./public/docs/Simulation_Success.png" width="800" alt="Simulation Success" />
+### 4.2 Simulation Feedback Loop
+<img src="./public/docs/Simulation_Running.png" width="400" alt="Simulation Running" /><img src="./public/docs/Simulation_Success.png" width="400" alt="Simulation Success" />
 
-*   **Logic Transformation**: During simulation, the engine ingests these properties and transforms them into executable steps.
-*   **Audit Output**: The resulting **Execution Log** is the primary output, providing:
-    *   **Status Indicators**: Mapping property-based logic (e.g., Threshold > 80) to `passed` or `failed` statuses.
-    *   **Trace Records**: A chronological log of every action, including parameters used during that specific execution cycle.
-    *   **Intelligence Summary**: A consolidated "executive summary" generated based on the final graph state properties.
+*   **Live Status**: Nodes on the canvas respond instantly with verified status icons (spinners for running, green checks for success).
+*   **Tracing**: The execution log provides a high-fidelity audit trail, showing exactly how each "Input" configuration resulted in a specific "Output" trace.
 
 ---
 
 ## 5. Design Choices
-* **Atomic Component Design**: Every node type inherits from a base `NodeShell`, ensuring visual consistency and centralized management of interaction states (Selected, Running, Failed).
-* **Controlled Form Pattern**: Configuration forms use controlled inputs with Zod schema validation to prevent malformed data from entering the graph.
-* **Topological Execution**: Simulation results are determined using a topological sort algorithm, ensuring that the execution order strictly follows the logical flow defined by the user.
+* **Atomic Component Design**: Every node type inherits from a base `NodeShell`, ensuring visual consistency and centralized management.
+* **Controlled Form Pattern**: Configuration forms use controlled inputs with Zod schema validation to ensure graph integrity.
+* **Topological Execution**: Results are determined using a topological sort algorithm to ensure strict procedural order.
 
 ---
 
 ## 6. Technical Assumptions
-* **DAG Limitation**: The simulation engine assumes the workflow is a Directed Acyclic Graph (DAG). If cycles are detected, simulation is gated to prevent infinite execution loops.
-* **Connectivity**: The system assumes every workflow must have exactly one Start node to serve as a valid entry point for the simulation engine.
-* **Local Persistence**: Data is managed in-memory via the Zustand store; persistent backend storage was explicitly excluded per the project brief.
+* **DAG Limitation**: The simulation engine assumes the workflow is a Directed Acyclic Graph (DAG) to prevent infinite loops.
+* **Connectivity**: The system requires exactly one Start node to serve as the valid entry point.
+* **Local Persistence**: Data is managed in-memory via the Zustand store per the project brief.
 
 ---
 
@@ -122,12 +124,8 @@ The Sandbox Simulation environment provides a robust testing loop for validating
 <img src="./public/docs/SpotlightSearch.png" width="800" alt="Spotlight Search" />
 <img src="./public/docs/QuickBuild.png" width="800" alt="Quick Build" />
 
-The Spotlight Command Center (`⌘K`) enables rapid canvas interaction, while the NLP Quick Build system allows for text-to-graph workflow generation.
-
 ### Artificial Intelligence Summarization
 <img src="./public/docs/Summary.png" width="800" alt="Summary Cloud" />
-
-A context-aware summary engine translates complex node networks into human-readable briefs for stakeholder review.
 
 ---
 
