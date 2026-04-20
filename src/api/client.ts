@@ -69,6 +69,10 @@ export async function postSimulate(workflow: {
     if (n.type === "approval" && (data.autoApproveThreshold ?? 0) > 80) {
       status = "skipped";
       message = "Auto-approved (threshold exceeded)";
+    } else if (n.type === "slack") {
+      message = `Posted message to ${data.channel || "#general"}`;
+    } else if (n.type === "email") {
+      message = `Sent email to ${data.recipient || "employee@company.com"}`;
     }
     return {
       nodeId: n.id,

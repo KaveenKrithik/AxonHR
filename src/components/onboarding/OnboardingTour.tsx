@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { X, ChevronRight, ChevronLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUIStore } from "@/store/uiStore";
 
 interface Step {
   title: string;
@@ -60,6 +61,9 @@ const STEPS: Step[] = [
 export function OnboardingTour() {
   const [currentStep, setCurrentStep] = useState(-1);
   const [coords, setCoords] = useState({ top: 0, left: 0, width: 0, height: 0 });
+  const spotlightOpen = useUIStore((s) => s.spotlightOpen);
+  const openSpotlight = useUIStore((s) => s.openSpotlight);
+  const closeSpotlight = useUIStore((s) => s.closeSpotlight);
 
   useEffect(() => {
     setTimeout(() => setCurrentStep(0), 1000);
@@ -67,14 +71,22 @@ export function OnboardingTour() {
 
   useEffect(() => {
     if (currentStep >= 0 && currentStep < STEPS.length) {
-      const el = document.getElementById(STEPS[currentStep].targetId);
+      const step = STEPS[currentStep];
+      const el = document.getElementById(step.targetId);
+
+      if (step.targetId === "spotlight-hint") {
+        if (!spotlightOpen) openSpotlight();
+      } else if (spotlightOpen) {
+        closeSpotlight();
+      }
+
       if (el) {
         const rect = el.getBoundingClientRect();
         setCoords({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
         el.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  }, [currentStep]);
+  }, [currentStep, spotlightOpen, openSpotlight, closeSpotlight]);
 
   if (currentStep < 0 || currentStep >= STEPS.length) return null;
 

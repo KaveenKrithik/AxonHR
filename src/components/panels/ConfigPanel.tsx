@@ -262,6 +262,31 @@ export function ConfigPanel() {
           </>
         )}
 
+        {/* SLACK INTEGRATION */}
+        {node.type === "slack" && (
+          <>
+            <Field label="Title"><Input value={data.title ?? ""} onChange={(e) => set({ title: e.target.value })} className="h-8 text-sm" /></Field>
+            <Field label="Slack Channel*"><Input value={data.channel ?? ""} placeholder="#general, @user, or ID" onChange={(e) => set({ channel: e.target.value })} className="h-8 text-sm" /></Field>
+            <Field label="Message*"><Textarea value={data.message ?? ""} onChange={(e) => set({ message: e.target.value })} rows={3} /></Field>
+            <Field label="Credential">
+              <Select value={data.credentialId ?? ""} options={["", ...credentials.filter(c => c.type === 'slack').map((c) => c.id)]} labels={["—", ...credentials.filter(c => c.type === 'slack').map((c) => c.name)]} onChange={(v) => set({ credentialId: v || undefined })} />
+            </Field>
+          </>
+        )}
+
+        {/* EMAIL INTEGRATION */}
+        {node.type === "email" && (
+          <>
+            <Field label="Title"><Input value={data.title ?? ""} onChange={(e) => set({ title: e.target.value })} className="h-8 text-sm" /></Field>
+            <Field label="Recipient*"><Input value={data.recipient ?? ""} placeholder="employee@company.com" onChange={(e) => set({ recipient: e.target.value })} className="h-8 text-sm" /></Field>
+            <Field label="Subject*"><Input value={data.subject ?? ""} onChange={(e) => set({ subject: e.target.value })} className="h-8 text-sm" /></Field>
+            <Field label="Message*"><Textarea value={data.message ?? ""} onChange={(e) => set({ message: e.target.value })} rows={3} /></Field>
+            <Field label="Credential">
+              <Select value={data.credentialId ?? ""} options={["", ...credentials.filter(c => c.type === 'smtp').map((c) => c.id)]} labels={["—", ...credentials.filter(c => c.type === 'smtp').map((c) => c.name)]} onChange={(v) => set({ credentialId: v || undefined })} />
+            </Field>
+          </>
+        )}
+
         {/* HUMAN APPROVAL */}
         {node.type === "humanApproval" && (
           <>

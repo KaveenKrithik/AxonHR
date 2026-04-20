@@ -10,6 +10,8 @@ export type NodeType =
   | "verifyDocument"
   | "humanApproval"
   | "notification"
+  | "slack"
+  | "email"
   | "end";
 
 export type NodeRunStatus = "idle" | "running" | "passed" | "failed" | "skipped";
@@ -121,6 +123,23 @@ export interface NotificationNodeData extends BaseNodeData {
   customTime?: string;
 }
 
+export interface SlackNodeData extends BaseNodeData {
+  type: "slack";
+  title: string;
+  channel: string;
+  message: string;
+  credentialId?: string;
+}
+
+export interface EmailNodeData extends BaseNodeData {
+  type: "email";
+  title: string;
+  recipient: string;
+  subject: string;
+  message: string;
+  credentialId?: string;
+}
+
 export interface EndNodeData extends BaseNodeData {
   type: "end";
   endMessage: string;
@@ -139,6 +158,8 @@ export type AnyNodeData =
   | HRDocVerifyNodeData
   | HumanApprovalNodeData
   | NotificationNodeData
+  | SlackNodeData
+  | EmailNodeData
   | EndNodeData;
 
 export type WorkflowNode = Node<AnyNodeData> & { type: NodeType };

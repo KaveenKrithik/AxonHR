@@ -80,20 +80,20 @@ const NodeShellInner = ({ id, data, selected, shape = "rect", subtitle, rightBad
 
       {/* Handles */}
       {data.type !== "start" && (
-        <Handle type="target" position={Position.Top} className="!bg-[#FF4F00] !border-none !w-2 !h-2 rounded-full cursor-pointer" />
+        <Handle type="target" position={Position.Top} className="!bg-[#00D084] !border-none !w-2 !h-2 rounded-full cursor-pointer" />
       )}
       {data.type !== "end" && !withYesNo && (
-        <Handle type="source" position={Position.Right} className="!bg-[#FF4F00] !border-none !w-2 !h-2 rounded-full cursor-pointer" />
+        <Handle type="source" position={Position.Right} className="!bg-[#00D084] !border-none !w-2 !h-2 rounded-full cursor-pointer" />
       )}
       {withYesNo && (
         <>
-          <Handle id="yes" type="source" position={Position.Top} className="!bg-[#FF4F00] !border-none !w-2 !h-2 cursor-pointer" style={{ right: "10%" }}>
+          <Handle id="yes" type="source" position={Position.Top} className="!bg-[#00D084] !border-none !w-2 !h-2 cursor-pointer" style={{ right: "10%" }}>
             <span className="absolute left-3 -top-2 text-[9px] font-medium text-muted-foreground">Yes</span>
           </Handle>
-          <Handle id="no" type="source" position={Position.Bottom} className="!bg-[#FF4F00] !border-none !w-2 !h-2 cursor-pointer" style={{ right: "10%" }}>
+          <Handle id="no" type="source" position={Position.Bottom} className="!bg-[#00D084] !border-none !w-2 !h-2 cursor-pointer" style={{ right: "10%" }}>
             <span className="absolute right-3 -top-2 text-[9px] font-medium text-muted-foreground">No</span>
           </Handle>
-          <Handle type="source" position={Position.Right} className="!bg-[#FF4F00] !border-none !w-2 !h-2" />
+          <Handle type="source" position={Position.Right} className="!bg-[#00D084] !border-none !w-2 !h-2" />
         </>
       )}
     </div>

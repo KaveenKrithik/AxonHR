@@ -76,7 +76,7 @@ export function NodeSidebar() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search apps..."
-              className="pl-8 h-9 text-sm bg-black/20 border-transparent text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#FF4F00]"
+              className="pl-8 h-9 text-sm bg-black/20 border-transparent text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D084]"
             />
           </div>
         </div>
@@ -108,12 +108,12 @@ export function NodeSidebar() {
                             e.dataTransfer.setData("application/reactflow", n.type);
                             e.dataTransfer.effectAllowed = "move";
                           }}
-                          className="group flex flex-col gap-1.5 p-3 rounded-xl bg-black/20 hover:bg-[#FF4F00]/10 border border-transparent hover:border-[#FF4F00]/30 cursor-grab active:cursor-grabbing transition-all"
+                          className="group flex flex-col gap-1.5 p-3 rounded-xl bg-black/20 hover:bg-[#00D084]/10 border border-transparent hover:border-[#00D084]/30 cursor-grab active:cursor-grabbing transition-all"
                         >
                           <div className="flex items-center gap-2">
                              <span
                                className="flex h-6 w-6 items-center justify-center rounded-md text-white shrink-0 shadow-sm"
-                               style={{ backgroundColor: n.type === 'start' || n.type === 'automation' ? '#FF4F00' : '#475569' }}
+                               style={{ backgroundColor: n.type === 'start' || n.type === 'automation' ? '#00D084' : '#475569' }}
                              >
                                <Icon className="h-3.5 w-3.5" />
                              </span>
@@ -131,7 +131,7 @@ export function NodeSidebar() {
         </div>
 
         <div className="p-4 border-t border-[#2d2d2d]">
-          <Button onClick={openTemplates} className="w-full h-10 bg-[#FF4F00] hover:bg-[#E54700] text-white font-bold border-0 transition-colors shadow-lg shadow-[#FF4F00]/20 rounded-xl">
+          <Button onClick={openTemplates} className="w-full h-10 bg-[#00D084] hover:bg-[#E54700] text-white font-bold border-0 transition-colors shadow-lg shadow-[#00D084]/20 rounded-xl">
             <Layout className="h-4 w-4 mr-2" /> Load HR Template
           </Button>
         </div>

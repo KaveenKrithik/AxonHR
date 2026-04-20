@@ -32,17 +32,19 @@ export function Toolbar() {
 
   return (
     <header className="h-14 bg-[#1e1e1e] text-white flex items-center px-4 gap-3 shrink-0 z-30 border-b border-[#2d2d2d]">
-      <div className="flex items-center gap-2 shrink-0">
-        <span className="flex h-6 w-6 items-center justify-center rounded bg-[#FF4F00] text-white">
-          <Workflow className="h-3.5 w-3.5" />
+      <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 overflow-hidden p-0.5">
+          <img src="/logo.png" alt="AxonHR Logo" className="w-full h-full object-contain mix-blend-screen scale-125" />
+        </div>
+        <span className="font-bold tracking-tighter text-base italic uppercase">
+          Axon<span className="text-[#00D084] not-italic">HR</span>
         </span>
-        <span className="font-semibold tracking-tight text-sm">AxonHR <span className="ml-1 text-[9px] bg-white/20 px-1 py-0.5 rounded">BETA</span></span>
       </div>
       <div className="flex-1 flex justify-center">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="bg-transparent text-sm text-center font-medium outline-none border-b border-transparent hover:border-white/20 focus:border-[#FF4F00] px-2 py-1 max-w-xs transition-colors"
+          className="bg-transparent text-sm text-center font-medium outline-none border-b border-transparent hover:border-white/20 focus:border-[#00D084] px-2 py-1 max-w-xs transition-colors"
         />
       </div>
       <div id="toolbar-actions" className="flex items-center gap-1 shrink-0">
@@ -66,8 +68,8 @@ export function Toolbar() {
         <Button variant="ghost" size="sm" className="h-8 hover:bg-red-500/20 text-red-400" onClick={handleClear}>
           Clear Canvas
         </Button>
-        <Button id="run-workflow" size="sm" className="h-8 bg-[#FF4F00] hover:bg-[#E54700] text-white ml-2" onClick={ui.openSandbox}>
-          <Play className="h-3.5 w-3.5 mr-1.5" /> Run
+        <Button id="run-workflow" size="sm" className="h-8 bg-[#00D084] hover:bg-[#00B070] text-black font-bold ml-2" onClick={ui.openSandbox}>
+          <Play className="h-3.5 w-3.5 mr-1.5 fill-black" /> Run
         </Button>
       </div>
     </header>
