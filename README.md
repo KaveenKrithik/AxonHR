@@ -1,67 +1,81 @@
-# AxonHR - HR Workflow Designer Module
+# AxonHR | Workflow Designer Prototype
 
-Welcome to **AxonHR**, a production-grade HR Workflow Designer module built with React and React Flow. This prototype enables HR administrators to visually create, validate, and simulate complex internal workflows (like employee onboarding, leave approvals, and offboarding).
+AxonHR is a high-fidelity, production-grade HR workflow automation module built for Tredence Analytics. It enables HR administrators to design, validate, and simulate complex internal processes such as onboarding and leave approvals through an intuitive, keyboard-first interface.
 
-This was developed as the assignment for the **Tredence Studio AI Engineering Internship (2025 Cohort)**.
+---
 
-## Architecture & Tech Stack
+## Technical Architecture
 
-This project is built to simulate a high-quality SaaS workflow builder with strict modularity.
+### 1. State Management Strategy
+The application utilizes a centralized **Zustand** store with **Immer** middleware. This architecture provides:
+*   **Atomic Updates**: Node data and edge connections are managed in a single source of truth.
+*   **Command History**: A snapshot-based stack allows for infinite **Undo/Redo** capabilities.
+*   **Serialization**: The entire workflow graph is serialized into a clean JSON structure for API consumption and persistence.
 
-- **Frontend Core**: React 18 with TypeScript. Bootstrapped with Vite.
-- **Canvas Engine**: `reactflow` (v11) handling DAG layout, edge routing, dragging, and selection.
-- **State Management**: `zustand`. The `workflowStore` holds the canvas state (nodes, edges) and encapsulates logic to update deeply nested node configurations, undo/redo tracking, and execution statuses.
-- **UI Framework**: Tailwind CSS providing a custom "Zapier-inspired" dark UI shell wrapped around a clean white canvas.
-- **Mock API Layer**: A standalone REST-like local mock client (`src/api/client.ts`) that realistically mimics `GET /automations` and POST `simulate`.
+### 2. Component Design System
+We implemented a **Modular Node Architecture** based on a shared `NodeShell` component.
+*   **Custom Form Generators**: The configuration panel uses a dynamic field-mapping system. For example, the Automated Step Node fetches its schema from the Mock API and renders inputs based on the required parameters (e.g., recipient, subject).
+*   **Raycast-Styled UI**: The interface follows a premium dark-mode aesthetic with sub-pixel borders and glassmorphic elements.
 
-## Folder Structure
+### 3. Mock API & Logic Layer
+The API layer (`src/api/client.ts`) simulates a real backend with:
+*   **GET /automations**: Serves a registry of system-triggered actions and their metadata.
+*   **POST /simulate**: A robust engine that performs **Topological Sorting** to determine execution order and **Graph Validation** to prevent logical cycles or disconnected nodes.
+*   **Latency Simulation**: Every request includes a simulated delay to test loading states and UI responsiveness.
 
-The project has strict separation between canvas logic, panel states, and API mocks:
+---
+
+## Core Features & Enhancements
+
+### Interactive Canvas
+A React Flow powered workspace supporting drag-and-drop node placement, smooth edge connections, and precise zoom/pan controls.
+*   **Refined Nodes**: Start, Task, Approval, Automation, and End nodes with specialized shapes and connection handles.
+*   **Visual Validation**: Nodes change status in real-time based on configuration completeness.
+
+### Power-User Spotlight Search
+A dual-pane command palette (`Cmd + K`) for instant discovery of nodes and templates, featuring high-contrast previews and keyboard navigation.
+
+### Integrated Sandbox
+A real-time execution logger that provides a step-by-step timeline of the workflow. If enabled, the **Tredence Analytics Intelligence Report** generates a final performance summary at the conclusion of the flow.
+
+### Guided Onboarding
+A 9-step interactive tour that introduces users to the designer's features, terminating with a persistence flag in localStorage so it only appears once per user.
+
+---
+
+## Project Structure
 
 ```text
 src/
-├── api/             # Local mock API layer (simulates fetching actions and running logic)
-├── components/
-│   ├── canvas/      # React Flow provider, canvas settings
-│   ├── nodes/       # Node visual definitions (shape adjustments, custom badge shells)
-│   ├── panels/      # Right-side dynamic Configuration Form, Sandbox Simulator UI
-│   ├── sidebar/     # Drag & drop Library, Templates Modal, Spotlight Search
-│   └── ui/          # Generic atomic components
-├── store/           # Zustand stores (workflow state, UI state variables)
-├── types/           # Strict definitions for node schemas (TypeScript)
-└── utils/           # Graph topology validator (cycles, isolated nodes checker)
+├── api/          # Mock API client and simulation logic
+├── components/   # Atomic UI components and custom nodes
+├── store/        # Zustand state management (Workflow/UI)
+├── types/        # TypeScript interfaces and data registries
+├── utils/        # Graph validation and text-to-flow parsers
+└── index.css     # Design system tokens and Greptile Green theme
 ```
 
-## How to Run
+---
 
-1. Clone the repository natively.
-2. Install dependencies (Node environment required) using npm, bun, or yarn:
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-4. Access the web app mapped by the console (usually `http://localhost:8080/` or `5173`).
+## Running the Prototype
 
-## Key Features & Design Decisions
+1.  Clone the repository.
+2.  Install dependencies: `npm install`.
+3.  Start the development server: `npm run dev`.
+4.  Access the designer at `http://localhost:5173`.
 
-- **Dynamic Node Forms**: Clicking any node opens a dynamic right-side config panel that adjusts precisely based on Node type (e.g., metadata Key-Values for 'Start', Automation Actions for 'System', thresholds for 'Approval'). Validations dynamically appear inline.
-- **Topological Simulation Layer**: The Sandbox maps out the drawn generic graph, passes it to the `POST /simulate` mock API which strictly topologically sorts the DAG, processes threshold parameters, and steps through the response data array.
-- **Smart Validation Engine**: The sandbox actively halts simulations if there are cyclical loops or isolated nodes detached from the Start node. Custom warnings pinpoint directly to the failing node ID.
-- **UX Innovation**: Implemented an Omni-bar spotlight search (`Cmd+K`), completely custom styled scrollbars, a Zapier-styled bottom-float palette, animated Auto-refitting viewport on template load, and "Diamond" logic forks to exceed baseline UX requirements visually.
+---
 
-## What's Completed vs. Future Additions
+## Design Decisions & Assumptions
 
-**✅ Completed (Meeting Core Requirements):**
-- Drag-and-drop workflow canvas with exact required custom nodes.
-- Full suite of dynamic configuration forms targeting custom configurations per node type.
-- Functional simulated `/simulate` and `/automations` API endpoints mapping.
-- Working Sandbox testing panel tracking step-by-step histories natively.
-- *Bonus functionality completed*: Export/Import JSON, Node Templates loaded out of the mock, Undo/Redo Engine, Minimap, Spotlight feature.
+*   **Assumption**: No backend persistence was required, so we utilized localStorage for onboarding state and a memory-based store for workflows.
+*   **Decision**: We chose **Zustand** over Redux for its lightweight footprint and excellent performance with React Flow's frequent state updates.
+*   **Branding**: The application was rebranded to **Greptile Green** (`#00D084`) to represent a high-tech, modern SaaS aesthetic.
 
-**🚀 What I would add with more time:**
-- **Auto-layout algorithm**: Integrate `dagre-js` or `elkjs` to organize messy canvas graphs instantly into a neat top-down flow with a "Clean up" button.
-- **Backend Persistence**: Connect to a proper PostgreSQL instance via Prisma/TRPC.
-- **Real-time Collaboration**: Tie the absolute x/y node coordinates into WebSockets or CRDTs (like Yjs) so two HR Admins can pair-edit workflows simultaneously.
+---
+
+## Future Roadmap
+
+*   **Version History**: Implementing a git-like branching system for workflow drafts.
+*   **Auto-Layout**: Integration with ELK.js or Dagre for complex graph organization.
+*   **Real Integration**: Moving from MSW/Local Mocks to a live Node.js or Go backend.
