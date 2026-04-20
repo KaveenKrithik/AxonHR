@@ -2,84 +2,79 @@
 
 <img src="./public/docs/logo.png" width="180" alt="AxonHR Logo" />
 
-## Introduction
-The AxonHR Workflow Designer is a high-fidelity prototype developed for the HR Automation Case Study. It provides a modern, interactive canvas environment for designing and simulating operational HR workflows.
+## Project Overview
+AxonHR is a high-fidelity workflow automation designer built for the HR Automation Case Study. This document outlines how all project deliverables and functional requirements have been satisfied.
 
 ---
 
-## 1. Functional Requirements Compliance
-This project strictly adheres to the submission guidelines, implementing all mandatory node types and canvas actions.
-
-### Node Connectivity & Editing
-![Main Interface](./public/docs/req_canvas.png)
-
-*   **Integrated Workflow Canvas**: Built on React Flow with support for drag-and-drop, custom connections, and sub-pixel grid alignment.
-*   **Dynamic Configuration Sidebar**: A context-aware panel for each node type, utilizing controlled components and Zod-backed validation.
-*   **Advanced Node Forms**: All mandatory fields are implemented:
-    *   **Start**: Title and Metadata (Key-Value Editor).
-    *   **Task**: Title, Description, Assignee, and Due Date.
-    *   **Approval**: Title, Role-based Routing (Manager, HRBP, Director), and Auto-Approve Thresholds.
-    *   **Automated Step**: Title and dynamic Action selection from the Mock API.
-    *   **End**: Exit message and Performance Summary Toggle.
+## 1. Deliverables Checklist
+The following components are present in the provided repository:
+*   [x] **React Application**: Built with React 18 and Vite for optimized performance.
+*   [x] **React Flow Canvas**: A highly interactive workspace featuring 12+ custom node types.
+*   [x] **Node Configuration Forms**: Type-safe, dynamic editing panels for every node type.
+*   [x] **Mock API Integration**: A lightweight async API layer simulating backend services.
+*   [x] **Sandbox Simulation Panel**: A dedicated environment for graph testing and execution logs.
+*   [x] **Architecture Documentation**: Comprehensive README detailing design choices and stack.
 
 ---
 
-## 2. Advanced Feature Suite
+## 2. Functional Requirements
+The prototype fulfills all technical specifications for the HR Workflow Designer:
 
-### Spotlight Command Center (`⌘K`)
-![Spotlight Search](./public/docs/SpotlightSearch.png)
-A unified command palette that allows for instant node insertion, template application, and canvas navigation.
+### 2.1 Workflow Canvas Actions
+![Canvas Interface](./public/docs/req_canvas.png)
+*   **Drag & Drop**: Seamlessly add nodes from the categorized sidebar.
+*   **Edge Connectivity**: Create logical connections between HR steps.
+*   **State Management**: Select nodes for focused editing via the Side Panel.
+*   **Lifecycle Control**: Full support for node/edge deletion and canvas clearing.
+*   **Real-time Validation**: Background constraints (e.g., ensuring a Start node exists).
 
-### Natural Language "Quick Build"
-![Quick Build](./public/docs/QuickBuild.png)
-An innovative text-to-graph parser that transforms semantic input (e.g., `Start -> Task -> Approval -> End`) into functional graph structures.
+### 2.2 Node Configuration Details (Key Requirement)
+Every node features a specialized editing form with controlled components and Zod validation:
 
----
-
-## 3. Technical Architecture & Mock API Layer
-
-A lightweight API layer has been implemented in `src/api/client.ts` to simulate production backend interactions.
-
-### API Endpoint Specifications
-*   **`GET /automations`**: Provides dynamic metadata for system nodes, returning actions with custom parameter definitions.
-*   **`POST /simulate`**: Accepts the full workflow serialization and returns a step-by-step execution log.
-*   **Topological Sorting**: The engine automatically determines the valid execution sequence for HR tasks using DAG principles.
-
----
-
-## 4. Workflow Testing / Sandbox Panel
-![Simulation Sandbox](./public/docs/Sandbox.png)
-
-The Sandbox panel serves as the primary validation and testing environment.
-1.  **Serialization**: Captures the entire graph state before submission.
-2.  **Structural Validation**: Background checks for circular dependencies, orphaned nodes, and missing connections.
-3.  **Real-Time Simulation**: Executes a mock run of the workflow, displaying status updates (`passed`, `running`, `skipped`) and execution speed for each node.
-
----
-
-## 5. Technical Stack & State Management
-*   **Framework**: React 18 (Vite) + TypeScript.
-*   **Canvas Engine**: React Flow.
-*   **State**: Zustand with Immer middleware for immutable timeline management (Undo/Redo).
-*   **Validation**: Zod + custom graph traversal algorithms.
-*   **UI/UX**: Tailwind CSS with a custom "Greptile Green" professional skin.
-
----
-
-## 6. Operational Guide
-
-| Shortcut | Action |
+| Node Type | Implementation Detail |
 | :--- | :--- |
-| `⌘K` | Command Palette (Search/Build) |
-| `⌘Z` / `⌘Y` | Undo / Redo timeline |
-| `S` / `P` | Selection / Pan Mode |
-| `Del` | Delete selected element |
-| `Esc` | Clear selection |
+| **Start Node** | Configurable Title and Metadata (Key-Value Editor). |
+| **Task Node** | Title (Req), Description, Assignee, and Date integration. |
+| **Approval Node** | Manager/HRBP/Director Role selection + Auto-Approve Threshold. |
+| **Automated Step** | Action selection from API list + Dynamic Parameter generation. |
+| **End Node** | Custom End Message + Performance Summary Toggle flag. |
 
-### Installation
-1. `npm install`
-2. `npm run dev`
-3. Open `http://localhost:5173`
+---
+
+## 3. Mock API Layer Implementation
+A lightweight API client is implemented in `src/api/client.ts` to simulate microservices:
+
+*   **`GET /automations`**: Returns a list of mock automated actions (Send Email, Generate Doc, etc.) with their required parameters. These define the dynamic UI of the Automated Step nodes.
+*   **`POST /simulate`**: Receives the serialized workflow JSON and returns a step-by-step mock execution trace.
+
+---
+
+## 4. Sandbox Simulation
+![Simulation Results](./public/docs/Sandbox.png)
+
+The **Sandbox Simulation** panel facilitates end-to-end workflow testing:
+*   **Graph Serialization**: Converts the React Flow state into a clean JSON structure for API transfer.
+*   **Validation Engine**: Detects structural errors (loops, orphaned nodes) before execution.
+*   **Execution Log**: Provides a timeline UI showing a step-by-step trace of node statuses and durations.
+*   **Logic Sorting**: Uses **Topological Sorting** to ensure nodes are executed in the correct dependency order.
+
+---
+
+## 5. Architectural Standards
+The project is designed with scalability and modularity as core priorities:
+*   **Folder Structure**: Clear separation between `components`, `store`, `types`, and `api`.
+*   **Logic Separation**: Canvas state (React Flow) is decoupled from data logic (Zustand) and API mocks.
+*   **Reusable Abstractions**: The `NodeShell` component and `NODE_REGISTRY` allow for effortless addition of new node types.
+*   **Type Safety**: Comprehensive TypeScript interfaces for all nodes, edges, and simulation results.
+*   **State Integrity**: Immer-powered state management ensures 100% reliable Undo/Redo cycles and history snapshots.
+
+---
+
+## 6. Power User Features (Value Adds)
+*   **Spotlight Command Center (`⌘K`)**: Instant search and node insertion.
+*   **Quick Build Parser**: Text-to-graph generation system.
+*   **Summary Intelligence Cloud**: Hover-aware plaintext workflow summaries.
 
 ---
 
