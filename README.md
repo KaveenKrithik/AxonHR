@@ -43,31 +43,30 @@ A context-aware summary engine that translates complex graph logic into human-re
 
 ---
 
-## 3. Technical Architecture
+## 3. Technical Architecture & Mock API Layer
 
-### Mock API Integration Layer
-The system implements a robust mock API (`src/api/client.ts`) that simulates production-grade backend interactions:
-*   **GET `/automations`**: Fetches dynamic parameters for automated step configurations.
-*   **POST `/simulate`**: Processes the entire workflow graph through a validation engine.
-*   **GET `/templates`**: Populates the workspace with pre-defined HR patterns.
+To ensure the prototype behaves like a production system, a lightweight **Mock API Layer** has been implemented in `src/api/client.ts`. This layer facilitates all data-driven interactions within the designer.
 
-### Simulation & Logic Engine
-The simulation engine utilizes **Topological Sorting** to determine the correct execution order of nodes. It validates the graph for:
-*   Circular dependencies.
-*   Orphaned nodes.
-*   Incomplete configurations.
-*   Missing start/end nodes.
+### API Endpoints Implementation
+*   **`GET /automations`**: 
+    *   **Purpose**: Providing dynamic metadata for automated workflow steps.
+    *   **Payload**: Returns an array of action objects (e.g., `send_email`, `generate_doc`) each defining its required parameters.
+    *   **Integration**: The `AutomationNode` dynamically generates its configuration form based on this response.
+*   **`POST /simulate`**:
+    *   **Purpose**: Processing and validating the complete workflow state.
+    *   **Logic**: The mock endpoint receives the full JSON representation of the canvas (nodes and edges) and performs **Topological Sorting** to determine the valid execution sequence.
+    *   **Response**: Returns a step-by-step execution log including node-level status (`passed`, `failed`, `skipped`) and simulated durations.
 
-### Frontend Stack
-*   **Core**: React 18 + TypeScript.
-*   **Canvas Engine**: React Flow.
-*   **State Management**: Zustand + Immer (supporting infinite Undo/Redo).
-*   **Styling**: Tailwind CSS + Shadcn UI.
-*   **Icons**: Lucide React.
+### Simulation Engine & Logic
+![Simulation Sandbox](./public/docs/Sandbox.png)
+The simulation logic is built on a directed acyclic graph (DAG) model:
+1.  **Validation**: Every simulation request triggers a graph integrity check (cycles, orphans, start/end node presence).
+2.  **Topological Sort**: Determines the logical order of HR operations.
+3.  **Step Execution**: Cycles through the ordered nodes, applying business rules (like auto-approval thresholds) to generate the final simulation trace.
 
 ---
 
-## 4. Operational Guide
+## 4. Frontend Stack & State Management
 
 ### Essential Keyboard Shortcuts
 | Shortcut | Action |
