@@ -211,15 +211,15 @@ function CanvasInner() {
             </div>
           </div>
         </Panel>
-        <Panel position="top-right" className={cn("mt-4 mr-4 z-50 transition-all duration-300", isHovering ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none")}>
+        <Panel position="top-right" className={cn("mt-4 mr-4 z-50 transition-all duration-300 flex flex-col items-end gap-4", isHovering ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none")}>
           <Popover>
             <PopoverTrigger asChild>
-              <button id="summary-cloud" className="h-10 px-4 rounded-full bg-brand hover:bg-brand/90 text-brand-foreground shadow-lg flex items-center gap-2 border-2 border-white/10 transition-all hover:scale-105 active:scale-95 group">
+              <button id="summary-cloud" className="h-10 px-4 rounded-full bg-brand hover:bg-brand/90 text-brand-foreground shadow-lg flex items-center gap-2 border-2 border-white/10 transition-all hover:scale-105 active:scale-95 group pointer-events-auto">
                 <Cloud className="h-4 w-4" />
                 <span className="text-xs font-bold uppercase tracking-tight">Summary</span>
               </button>
             </PopoverTrigger>
-            <PopoverContent side="bottom" align="end" className="w-96 p-4 max-h-[80vh] overflow-y-auto shadow-2xl mt-2 z-50" style={{ zIndex: 9999 }}>
+            <PopoverContent side="bottom" align="end" className="w-96 p-4 max-h-[80vh] overflow-y-auto shadow-2xl mt-2 z-50 pointer-events-auto" style={{ zIndex: 9999 }}>
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-semibold text-lg flex items-center gap-2"><Cloud className="h-5 w-5 text-brand" /> Summary</h3>
                 <button onClick={() => { navigator.clipboard.writeText(summariseWorkflow(nodes, edges).replace(/\*\*|_/g, "")); toast.success("Copied"); }} className="p-1.5 hover:bg-muted rounded text-muted-foreground">
@@ -234,9 +234,8 @@ function CanvasInner() {
               />
             </PopoverContent>
           </Popover>
-        </Panel>
-        <Panel position="bottom-right" className="mb-4 mr-4 pointer-events-none select-none">
-          <div className="flex flex-col gap-2 scale-90 origin-bottom-right opacity-40 hover:opacity-100 transition-opacity pointer-events-auto">
+
+          <div className="flex flex-col gap-1.5 scale-90 origin-top-right opacity-60 hover:opacity-100 transition-opacity pointer-events-auto bg-card/40 backdrop-blur-[2px] p-2 rounded-lg border border-border/20">
              <Shortcut hint="⌘K" label="Spotlight" />
              <Shortcut hint="⌘Z" label="Undo" />
              <Shortcut hint="⌘Y" label="Redo" />
