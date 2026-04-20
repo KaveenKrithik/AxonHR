@@ -14,6 +14,8 @@ const PATTERNS = [
   { id: "tpl-off", label: "Offboarding Checklist", icon: "LayoutTemplate", description: "HR exit process and asset collection", kw: ["off", "exit"] },
 ];
 
+import { parseTextToFlow } from "@/utils/textToFlow";
+
 export function SpotlightSearch() {
   const open = useUIStore((s) => s.spotlightOpen);
   const close = useUIStore((s) => s.closeSpotlight);
@@ -39,17 +41,29 @@ export function SpotlightSearch() {
     (p) => !q || p.kw.some((k) => lc.includes(k)) || p.label.toLowerCase().includes(lc)
   ), [lc, q]);
 
-  const allItems = useMemo(() => [
-    ...nodeMatches.map(n => ({ ...n, itemType: 'node' as const })),
-    ...patternMatches.map(p => ({ ...p, itemType: 'template' as const }))
-  ], [nodeMatches, patternMatches]);
+  const allItems = useMemo(() => {
+    const list = [
+      ...nodeMatches.map(n => ({ ...n, itemType: 'node' as const })),
+      ...patternMatches.map(p => ({ ...p, itemType: 'template' as const }))
+    ];
+    if (q.includes("->") || q.includes("→") || (q.length > 3 && !nodeMatches.length)) {
+      list.push({
+        id: "quick-build",
+        label: "Quick Build: " + q,
+        description: "Generate a multi-node workflow from this text.",
+        icon: "Zap",
+        itemType: "command" as any,
+      } as any);
+    }
+    return list;
+  }, [nodeMatches, patternMatches, q]);
 
   const selectedItem = allItems[selectedIndex];
 
   const handleAction = async (item: typeof allItems[0]) => {
     if (item.itemType === 'node') {
       addNode((item as any).type);
-    } else {
+    } else if (item.itemType === 'template') {
       const tpls = await getHRTemplates();
       const map: Record<string, string> = {
         "tpl-onboarding": "onboarding",
@@ -59,6 +73,9 @@ export function SpotlightSearch() {
       };
       const tpl = tpls.find((t) => t.id === map[item.id]);
       if (tpl) loadWorkflow({ nodes: tpl.nodes, edges: tpl.edges, name: tpl.name });
+    } else if (item.id === 'quick-build') {
+      const res = parseTextToFlow(q);
+      if (res.nodes.length) loadWorkflow({ ...res, name: "AI Generated Flow" });
     }
     close();
   };

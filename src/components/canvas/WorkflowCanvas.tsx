@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
   Background, BackgroundVariant, Controls, MiniMap, ReactFlowProvider, Panel,
   useReactFlow, type ReactFlowInstance,
@@ -41,6 +41,9 @@ function CanvasInner() {
   const undo = useWorkflowStore((s) => s.undo);
   const selectNode = useUIStore((s) => s.selectNode);
   const deselectNode = useUIStore((s) => s.deselectNode);
+  const openTemplates = useUIStore((s) => s.openTemplates);
+  const redo = useWorkflowStore((s) => s.redo);
+
   const openSpotlight = useUIStore((s) => s.openSpotlight);
   const cursorMode = useUIStore((s) => s.cursorMode);
   const setCursorMode = useUIStore((s) => s.setCursorMode);
@@ -74,7 +77,7 @@ function CanvasInner() {
       const type = e.dataTransfer.getData("application/reactflow") as NodeType;
       if (!type || !wrapper.current) return;
       const position = screenToFlowPosition({ x: e.clientX, y: e.clientY });
-      // Offset to center the node (approximate width 240, height 80)
+      // Offset to center the node
       const centeredPosition = {
         x: position.x - 120,
         y: position.y - 40
@@ -91,8 +94,42 @@ function CanvasInner() {
 
   const isEmpty = nodes.length === 0;
 
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Global Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isCmd = e.metaKey || e.ctrlKey;
+      if (isCmd && e.key === "k") {
+        e.preventDefault();
+        openSpotlight();
+      }
+      if (isCmd && e.key === "z") {
+        e.preventDefault();
+        if (e.shiftKey) redo();
+        else undo();
+      }
+      if (isCmd && e.key === "y") {
+        e.preventDefault();
+        redo();
+      }
+      if (!isCmd) {
+        if (e.key === "s") setCursorMode("select");
+        if (e.key === "p") setCursorMode("pan");
+        if (e.key === "Escape") deselectNode();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [openSpotlight, undo, redo, setCursorMode, deselectNode]);
+
   return (
-    <div ref={wrapper} className="relative h-full w-full bg-canvas">
+    <div 
+      ref={wrapper} 
+      className="relative h-full w-full bg-canvas"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <ReactFlow
         nodes={nodes}
         edges={animatedEdges}
@@ -111,6 +148,7 @@ function CanvasInner() {
         selectionMode={cursorMode === "select" ? 1 : 0} // 1 is 'all'
         defaultEdgeOptions={{ type: "custom" }}
         proOptions={{ hideAttribution: true }}
+        deleteKeyCode={["Backspace", "Delete"]}
       >
         <Background variant={BackgroundVariant.Lines} gap={24} size={1} color="#e5e7eb" />
         <Controls className="!bg-card !border !border-border !rounded-lg !shadow-md" />
@@ -173,7 +211,7 @@ function CanvasInner() {
             </div>
           </div>
         </Panel>
-        <Panel position="top-right" className="mt-4 mr-4 z-50">
+        <Panel position="top-right" className={cn("mt-4 mr-4 z-50 transition-all duration-300", isHovering ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none")}>
           <Popover>
             <PopoverTrigger asChild>
               <button id="summary-cloud" className="h-10 px-4 rounded-full bg-brand hover:bg-brand/90 text-brand-foreground shadow-lg flex items-center gap-2 border-2 border-white/10 transition-all hover:scale-105 active:scale-95 group">
@@ -196,6 +234,17 @@ function CanvasInner() {
               />
             </PopoverContent>
           </Popover>
+        </Panel>
+        <Panel position="bottom-right" className="mb-4 mr-4 pointer-events-none select-none">
+          <div className="flex flex-col gap-2 scale-90 origin-bottom-right opacity-40 hover:opacity-100 transition-opacity pointer-events-auto">
+             <Shortcut hint="⌘K" label="Spotlight" />
+             <Shortcut hint="⌘Z" label="Undo" />
+             <Shortcut hint="⌘Y" label="Redo" />
+             <Shortcut hint="S" label="Select Mode" />
+             <Shortcut hint="P" label="Pan Mode" />
+             <Shortcut hint="Esc" label="Deselect" />
+             <Shortcut hint="Del" label="Delete Node" />
+          </div>
         </Panel>
       </ReactFlow>
       {isEmpty && (
@@ -221,6 +270,15 @@ function CanvasInner() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function Shortcut({ hint, label }: { hint: string; label: string }) {
+  return (
+    <div className="flex items-center justify-end gap-2 text-[10px] font-medium">
+      <span className="text-muted-foreground uppercase tracking-tight">{label}</span>
+      <kbd className="bg-card border border-border px-1.5 py-0.5 rounded shadow-sm text-foreground min-w-[24px] text-center">{hint}</kbd>
     </div>
   );
 }

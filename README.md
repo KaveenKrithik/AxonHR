@@ -1,82 +1,66 @@
 # AxonHR | Workflow Builder for HR
 
-![AxonHR Logo](./public/docs/logo.png)
+![AxonHR Brand](./public/docs/logo.png)
 
-AxonHR is a high-fidelity, production-grade HR workflow automation module built for Tredence Analytics. It enables HR administrators to design, validate, and simulate complex internal processes such as onboarding and leave approvals through an intuitive, keyboard-first interface.
+> **"HR automation shouldn't feel like a spreadsheet. It should feel like a superpower."**
 
----
-
-## 📋 Requirement Compliance Checklist
-
-The project was built to satisfy all the core requirements of the Case Study. Each functional requirement is mapped to its implementation below.
-
-### 1. Workflow Canvas (React Flow)
-**Requirement**: Implement a drag-and-drop canvas with five custom node types (Start, Task, Approval, Automated, End), connection edges, and node selection/deletion.
-![Requirement 1: Canvas](./public/docs/canvas.png)
-*   **Status**: Completed with high-fidelity visual feedback and sub-pixel grid system.
-
-### 2. Node Configuration Forms
-**Requirement**: Editable form panels for each node type with specific minimum fields (e.g., auto-approve threshold, assignee, due date).
-![Requirement 2: Forms](./public/docs/form_full.png)
-*   **Status**: Completed using controlled components and the **Greptile Green** design system.
-
-### 3. Mock API & Automated Actions
-**Requirement**: Integrate a mock API for `/automations` and dynamic parameter generation.
-![Requirement 3: API Integration](./public/docs/search_full.png)
-*   **Status**: Completed. Action parameters update dynamically based on the selected mock automation (e.g. Email vs. Slack).
-
-### 4. Simulation Sandbox
-**Requirement**: A testing panel that serializes the graph, validates structure, and displays execution logs.
-![Requirement 4: Sandbox](./public/docs/sandbox_full.png)
-*   **Status**: Completed with a **Topological-Sort** engine and real-time execution timeline.
+AxonHR is my take on the future of internal HR operations. Instead of static forms and rigid flows, I've built a dynamic, keyboard-first environment where HR admins can draft, validate, and simulate complex workflows with the speed of a software engineer.
 
 ---
 
-## Technical Architecture
+## 🎨 The Vision: Speed + Precision
 
-### Workflow Life Cycle
-```mermaid
-graph LR
-    A[Start Node] --> B[Task/Approval Node]
-    B --> C{Auto-Validation}
-    C -- Valid --> D[Topological Sort]
-    C -- Invalid --> E[Visual Error State]
-    D --> F[Mock API Simulation]
-    F --> G[Execution Logs / Analytics]
-```
+I built AxonHR around a single core philosophy: **Frictionless Creation**. Every design decision—from the "Greptile Green" aesthetic to the sub-pixel grid canvas—was made to ensure that the interface disappears, leaving only the logic behind.
 
-### State Management Strategy
-The application utilizes a centralized **Zustand** store with **Immer** middleware. This architecture provides:
-*   **Atomic Updates**: Node data and edge connections are managed in a single source of truth.
-*   **Command History**: A snapshot-based stack allows for infinite **Undo/Redo** capabilities.
-*   **Serialization**: The entire workflow graph is serialized into a clean JSON structure for API consumption and persistence.
+### ⚡ Power-User Command Center
+![Spotlight Search](./public/docs/SpotlightSearch.png)
+The heart of the app is the **Spotlight Search (`⌘K`)**. Inspired by tools like Raycast and Linear, it’s not just a search bar—it’s a command palette. You can search for nodes, apply templates, or use the **Quick Build** feature to transform a single line of text into a multi-node workflow instantly.
+
+### ✨ AI-Driven "Quick Build"
+![Quick Build Action](./public/docs/QuickBuild.png)
+Why drag-and-drop when you can just type? With the **Quick Build** feature, I've implemented a natural language parser that understands flow semantics. Type `Start -> Verify Document -> Approval -> End` and watch the canvas populate itself.
 
 ---
 
-## Core Features & Enhancements
+## 🏗️ Technical Foundation
 
-### Power-User Spotlight Search
-A dual-pane command palette (`Cmd + K`) for instant discovery of nodes and templates, featuring high-contrast previews and keyboard navigation.
+### The Canvas Engine
+![Canvas Overview](./public/docs/req_canvas.png)
+Built on **React Flow**, the canvas handles hundreds of nodes with ease. I've implemented:
+*   **Topological Sorting**: The engine understands the "execution order" of your graph, not just the visual layout.
+*   **Hotkeys for Everything**: `S` for Select, `P` for Pan, `Del` to prune. The **Shortcuts Legend** in the bottom-right keeps the power at your fingertips.
 
-### Integrated Toolbar
-A React Flow powered workspace with precise zoom/pan controls via our specialized floating toolbar.
-
-### Guided Onboarding
-A 9-step interactive tour that introduces users to the designer's features, with persistent state in localStorage.
-
----
-
-## Running the Prototype
-
-1.  Clone the repository.
-2.  Install dependencies: `npm install`.
-3.  Start the development server: `npm run dev`.
-4.  Access the designer at `http://localhost:5173`.
+### Deep Configuration
+![Node Config](./public/docs/req_forms.png)
+Every node is a specialized HR unit. Whether it's setting an **Auto-Approve Threshold** on an Approval node or configuring dynamic parameters for a **Mock API action**, the sidebar responds instantly to your selection with type-safe, validated forms.
 
 ---
 
-## Design Decisions & Assumptions
+## 🧠 Intelligence & Analytics
 
-*   **Assumption**: No backend persistence was required, so we utilized localStorage for onboarding state and a memory-based store for workflows.
-*   **Decision**: We chose **Zustand** over Redux for its lightweight footprint and excellent performance.
-*   **Branding**: Rebranded to **Greptile Green** (`#00D084`) for a high-tech SaaS aesthetic.
+### The Summary Cloud
+![Intelligence Report](./public/docs/Summary.png)
+HR logic can get complex. That’s why I added the **Summary Cloud**. Hover over the canvas to reveal a high-level plain-English breakdown of your entire workflow. One click lets you copy the summary to your clipboard for status updates or documentation.
+
+### Ready-to-Go Templates
+![Workflow Templates](./public/docs/Templates.png)
+I've pre-loaded the system with standard HR patterns (Onboarding, Leave Approval, Offboarding). These aren't just static images—they are fully functional, interactive graphs that you can apply with a single click.
+
+---
+
+## 🛠️ How to Run
+
+1.  **Clone** the repository.
+2.  **Install**: `npm install`.
+3.  **Launch**: `npm run dev`.
+4.  **Explore**: Open `http://localhost:5173`. Use **`⌘K`** to start your first flow.
+
+---
+
+## 💡 Final Thoughts on Architecture
+
+*   **State**: I chose **Zustand + Immer** for a lightweight yet robust state management system that supports infinite Undo/Redo.
+*   **Validation**: Every time you move a node, a background validator checks for orphaned edges, missing connections, or logic loops.
+*   **Branding**: The "Greptile Green" theme isn't just for show; it provides the high contrast needed for long-duration technical work.
+
+Developed with ❤️ for the Tredence Analytics HR Ops Team.
