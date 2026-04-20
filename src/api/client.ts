@@ -120,10 +120,10 @@ const onboarding = {
   description: "6-step new hire onboarding flow",
   nodes: [
     mkNode("o1", "start", { x: 280, y: 40 }, { label: "Start", title: "New hire onboarding", metadata: {} }),
-    mkNode("o2", "addEmployee", { x: 280, y: 280 }, { label: "Add Employee", employeeName: "", email: "", role: "Engineer", department: "Engineering" }),
+    mkNode("o2", "addEmployee", { x: 280, y: 280 }, { label: "Add Employee", employeeName: "New Hire", email: "new.hire@company.com", role: "Engineer", department: "Engineering" }),
     mkNode("o3", "automation", { x: 280, y: 520 }, { label: "Send welcome kit", title: "Welcome kit", actionId: "send_welcome_kit", actionParams: {} }),
     mkNode("o4", "task", { x: 280, y: 760 }, { label: "Setup laptop", title: "Provision equipment", priority: "High", customFields: {} }),
-    mkNode("o5", "humanApproval", { x: 280, y: 1000 }, { label: "Manager confirms", title: "Manager confirms ready", approverName: "", approverEmail: "", notifyVia: ["email"] }),
+    mkNode("o5", "humanApproval", { x: 280, y: 1000 }, { label: "Manager confirms", title: "Manager confirms ready", approverName: "John Lead", approverEmail: "john@company.com", notifyVia: ["email"] }),
     mkNode("o6", "end", { x: 280, y: 1240 }, { label: "End", endMessage: "Employee onboarded", showSummary: true }),
   ] as WorkflowNode[],
   edges: [
@@ -141,7 +141,7 @@ const leave = {
   description: "Leave request with manager approval",
   nodes: [
     mkNode("l1", "start", { x: 280, y: 40 }, { label: "Start", title: "Leave request", metadata: {} }),
-    mkNode("l2", "processLeave", { x: 280, y: 280 }, { label: "Process leave", leaveType: "Annual", daysRequested: 5, approverId: "" }),
+    mkNode("l2", "processLeave", { x: 280, y: 280 }, { label: "Process leave", leaveType: "Annual", daysRequested: 5, approverId: "Manager" }),
     mkNode("l3", "approval", { x: 280, y: 520 }, { label: "Manager approval", title: "Approve leave", approverRole: "Manager", notifyVia: ["email"], autoApproveThreshold: 0 }),
     mkNode("l4", "end", { x: 280, y: 760 }, { label: "End", endMessage: "Leave processed", showSummary: true }),
   ] as WorkflowNode[],
@@ -158,7 +158,7 @@ const docverify = {
   description: "Verify a document and notify",
   nodes: [
     mkNode("d1", "start", { x: 280, y: 40 }, { label: "Start", title: "Doc verification", metadata: {} }),
-    mkNode("d2", "verifyDocument", { x: 280, y: 280 }, { label: "Verify ID", documentType: "ID", verifiedBy: "" }),
+    mkNode("d2", "verifyDocument", { x: 280, y: 280 }, { label: "Verify ID", documentType: "ID", verifiedBy: "HR Specialist" }),
     mkNode("d3", "approval", { x: 280, y: 520 }, { label: "HRBP review", title: "HR review", approverRole: "HRBP", notifyVia: ["email"], autoApproveThreshold: 0 }),
     mkNode("d4", "notification", { x: 280, y: 760 }, { label: "Notify employee", title: "Email result", channel: "email", recipients: [], message: "Your document has been verified" }),
     mkNode("d5", "end", { x: 280, y: 1000 }, { label: "End", endMessage: "Verification complete", showSummary: true }),

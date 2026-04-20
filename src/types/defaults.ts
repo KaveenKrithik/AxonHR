@@ -24,6 +24,7 @@ export function defaultDataFor(type: NodeType): AnyNodeData {
         type,
         label: "Approval",
         title: "Needs approval",
+        approverRole: "Manager",
         notifyVia: ["email"],
         autoApproveThreshold: 0,
       };
@@ -43,14 +44,14 @@ export function defaultDataFor(type: NodeType): AnyNodeData {
         label: "Process Leave",
         leaveType: "Annual",
         daysRequested: 1,
-        approverId: "",
+        approverId: "Manager",
       };
     case "verifyDocument":
       return {
         type,
         label: "Verify Document",
         documentType: "ID",
-        verifiedBy: "",
+        verifiedBy: "HRBP",
       };
     case "humanApproval":
       return {
