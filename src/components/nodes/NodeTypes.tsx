@@ -4,7 +4,7 @@ import { NodeShell } from "./NodeShell";
 import type {
   StartNodeData, EndNodeData, TaskNodeData, ApprovalNodeData, AutomationNodeData,
   HRAddEmployeeNodeData, HRLeaveNodeData, HRDocVerifyNodeData, HumanApprovalNodeData,
-  NotificationNodeData,
+  NotificationNodeData, SlackNodeData, EmailNodeData,
 } from "@/types";
 
 export const StartNode = memo((p: NodeProps<StartNodeData>) => (
@@ -41,4 +41,10 @@ export const HumanApprovalNode = memo((p: NodeProps<HumanApprovalNodeData>) => (
 ));
 export const NotificationNode = memo((p: NodeProps<NotificationNodeData>) => (
   <NodeShell {...p} subtitle={`${p.data.channel} • ${p.data.recipients.length} recipient(s)`} />
+));
+export const SlackNode = memo((p: NodeProps<SlackNodeData>) => (
+  <NodeShell {...p} subtitle={p.data.channel || "#general"} />
+));
+export const EmailNode = memo((p: NodeProps<EmailNodeData>) => (
+  <NodeShell {...p} subtitle={p.data.recipient || "new email"} />
 ));

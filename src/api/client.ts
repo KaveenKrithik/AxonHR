@@ -74,14 +74,28 @@ export async function postSimulate(workflow: {
     } else if (n.type === "email") {
       message = `Sent email to ${data.recipient || "employee@company.com"}`;
     }
-    return {
+    const step: SimStep = {
       nodeId: n.id,
       nodeLabel: data.label ?? n.type,
       status,
       message,
       duration: 50 + Math.floor(Math.random() * 750),
     };
-  });
+
+    if (n.type === "end" && data.showSummary) {
+      return [
+        step,
+        {
+          nodeId: `${n.id}-summary`,
+          nodeLabel: "Tredence Analytics",
+          status: "passed" as const,
+          message: "Generated intelligence summary and performance report",
+          duration: 300,
+        },
+      ];
+    }
+    return step;
+  }).flat();
   await delay(200);
   return { status: "success", steps };
 }

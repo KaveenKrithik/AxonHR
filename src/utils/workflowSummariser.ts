@@ -51,6 +51,10 @@ export function summariseWorkflow(
       parts.push(`verify the **${d.documentType}** document`);
     } else if (n.type === "notification") {
       parts.push(`send a **${d.channel}** notification${d.recipients?.length ? ` to ${d.recipients.length} recipient(s)` : ""}`);
+    } else if (n.type === "slack") {
+      parts.push(`post a slack message to **${d.channel || "the channel"}**`);
+    } else if (n.type === "email") {
+      parts.push(`send an email to **${d.recipient || "the recipient"}**`);
     } else if (n.type === "end") {
       parts.push(`finally end with: _${d.endMessage}_`);
     }

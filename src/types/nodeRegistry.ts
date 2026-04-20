@@ -98,6 +98,14 @@ export const NODE_REGISTRY: NodeRegistryEntry[] = [
     category: "Approvals",
     color: "node-human",
   },
+  {
+    type: "notification",
+    label: "Notification",
+    description: "Multi-channel alert system for email and slack.",
+    icon: "Bell",
+    category: "Integrations",
+    color: "node-notification",
+  },
 ];
 
 export const NODE_REGISTRY_BY_TYPE: Record<NodeType, NodeRegistryEntry> =

@@ -70,5 +70,22 @@ export function defaultDataFor(type: NodeType): AnyNodeData {
         recipients: [],
         message: "",
       };
+    case "slack":
+      return {
+        type,
+        label: "Slack Message",
+        title: "Post to Slack",
+        channel: "",
+        message: "",
+      };
+    case "email":
+      return {
+        type,
+        label: "Email Integration",
+        title: "Send Email",
+        recipient: "",
+        subject: "",
+        message: "",
+      };
   }
 }
