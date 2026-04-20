@@ -42,12 +42,6 @@ The system provides specialized nodes with rigorous data field requirements:
 * **Automated Step**: Dynamic action mapping from the mock API response.
 * **End Node**: Performance summary flags and workflow termination logic.
 
-### 2.3 Communication Integration (Email & Slack)
-The designer includes dedicated nodes for enterprise communication:
-* **Email Node**: Configurable recipient, subject, and body with SMTP credential linking.
-* **Slack Node**: Direct channel targeting and message formatting for instant team updates.
-* **Notification Node**: Multi-channel (Both) delivery system for critical HR alerts.
-
 ---
 
 ## 3. Technical Architecture
@@ -101,21 +95,38 @@ The system transforms user-defined properties (Inputs) into actionable execution
 
 ---
 
-## 5. Design Choices
+## 5. Enterprise Integrations (Slack & Email)
+AxonHR features native support for automated communication channels to streamline HR notifications.
+
+### 5.1 Slack Integration
+The **Slack Node** enables instant team notifications through dedicated channels.
+*   **Input Capability**: Configurable Channel Name (e.g., `#new-hires`), Message Template, and User Tagging.
+*   **Execution Logic**: The simulation validates channel accessibility and formats the payload for the mock API.
+*   **Output**: Confirms message delivery in the execution log: *"Published onboarding alert to Slack channel #new-hires"*.
+
+### 5.2 Email Automation
+The **Email Node** handles formal corporate communication.
+*   **Input Capability**: Recipient Email Address, Subject Line, and Dynamic Body content.
+*   **Credential Linking**: Inherits verification from the centralized Credentials Manager.
+*   **Output**: Captures SMTP handoff status: *"Welcome email successfully dispatched to kaveen@company.com"*.
+
+---
+
+## 6. Design Choices
 * **Atomic Component Design**: Every node type inherits from a base `NodeShell`, ensuring visual consistency and centralized management.
 * **Controlled Form Pattern**: Configuration forms use controlled inputs with Zod schema validation to ensure graph integrity.
 * **Topological Execution**: Results are determined using a topological sort algorithm to ensure strict procedural order.
 
 ---
 
-## 6. Technical Assumptions
+## 7. Technical Assumptions
 * **DAG Limitation**: The simulation engine assumes the workflow is a Directed Acyclic Graph (DAG) to prevent infinite loops.
 * **Connectivity**: The system requires exactly one Start node to serve as the valid entry point.
 * **Local Persistence**: Data is managed in-memory via the Zustand store per the project brief.
 
 ---
 
-## 7. Premium Add-on Features
+## 8. Premium Add-on Features
 
 ### Templates & Quick Start patterns
 <img src="./public/docs/Templates.png" width="800" alt="Templates Library" />
@@ -129,7 +140,7 @@ The system transforms user-defined properties (Inputs) into actionable execution
 
 ---
 
-## 8. Operational Guide
+## 9. Operational Guide
 
 | Shortcut | Action |
 | :--- | :--- |
