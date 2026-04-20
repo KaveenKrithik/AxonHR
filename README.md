@@ -1,66 +1,91 @@
-# AxonHR | Workflow Builder for HR
+# AxonHR | Workflow Designer Prototype
 
-![AxonHR Brand](./public/docs/logo.png)
+<img src="./public/docs/logo.png" width="180" alt="AxonHR Logo" />
 
-> **"HR automation shouldn't feel like a spreadsheet. It should feel like a superpower."**
-
-AxonHR is my take on the future of internal HR operations. Instead of static forms and rigid flows, I've built a dynamic, keyboard-first environment where HR admins can draft, validate, and simulate complex workflows with the speed of a software engineer.
+## Introduction
+The AxonHR Workflow Designer is a high-fidelity prototype developed specifically for the HR Automation Case Study. This application enables HR professionals to design, validate, and simulate complex operational workflows through a modern, interactive canvas interface.
 
 ---
 
-## 🎨 The Vision: Speed + Precision
+## 1. Functional Requirements Compliance
+The application satisfies all core requirements specified in the project brief:
 
-I built AxonHR around a single core philosophy: **Frictionless Creation**. Every design decision—from the "Greptile Green" aesthetic to the sub-pixel grid canvas—was made to ensure that the interface disappears, leaving only the logic behind.
+### Core Node Registry
+*   **Trigger (Start)**: Customizable entry point for onboarding or leave triggers.
+*   **Decision (Approval)**: Multi-path logic supporting Manager, HRBP, and Director roles.
+*   **Human Step (Sign-off)**: Targeted approvals requiring explicit human interaction.
+*   **Integration (Slack/Email)**: Pre-configured nodes for automated communication.
+*   **Automated Action**: Dynamic tasks linked to the mock API layer.
+*   **Termination (End)**: Secure exit points with intelligence summary flags.
 
-### ⚡ Power-User Command Center
+### Data Management & Configuration
+*   **Reactive Sidebar**: Context-aware property sheets for each node type.
+*   **Type-Safe Forms**: Built with Zod validation to ensure data integrity.
+*   **Graph Persistence**: Full serialization support for saving and loading complex states.
+*   **Visual Logic**: Automated "Yes/No" branch generation for decision nodes.
+
+---
+
+## 2. Advanced Feature Suite (Value Adds)
+In addition to the core requirements, several "Power User" features have been implemented to elevate the designer to a $10M SaaS-grade experience:
+
+### Spotlight Command Center (`⌘K`)
 ![Spotlight Search](./public/docs/SpotlightSearch.png)
-The heart of the app is the **Spotlight Search (`⌘K`)**. Inspired by tools like Raycast and Linear, it’s not just a search bar—it’s a command palette. You can search for nodes, apply templates, or use the **Quick Build** feature to transform a single line of text into a multi-node workflow instantly.
+A unified command palette that allows for instant node insertion, template application, and canvas navigation.
 
-### ✨ AI-Driven "Quick Build"
-![Quick Build Action](./public/docs/QuickBuild.png)
-Why drag-and-drop when you can just type? With the **Quick Build** feature, I've implemented a natural language parser that understands flow semantics. Type `Start -> Verify Document -> Approval -> End` and watch the canvas populate itself.
+### Natural Language "Quick Build"
+![Quick Build](./public/docs/QuickBuild.png)
+An innovative text-to-graph parser that allows users to type flows like `Start -> Task -> Approval -> End` to generate functional workflows instantly.
 
----
-
-## 🏗️ Technical Foundation
-
-### The Canvas Engine
-![Canvas Overview](./public/docs/req_canvas.png)
-Built on **React Flow**, the canvas handles hundreds of nodes with ease. I've implemented:
-*   **Topological Sorting**: The engine understands the "execution order" of your graph, not just the visual layout.
-*   **Hotkeys for Everything**: `S` for Select, `P` for Pan, `Del` to prune. The **Shortcuts Legend** in the bottom-right keeps the power at your fingertips.
-
-### Deep Configuration
-![Node Config](./public/docs/req_forms.png)
-Every node is a specialized HR unit. Whether it's setting an **Auto-Approve Threshold** on an Approval node or configuring dynamic parameters for a **Mock API action**, the sidebar responds instantly to your selection with type-safe, validated forms.
+### Tredence Intelligence Summary
+![Summary Cloud](./public/docs/Summary.png)
+A context-aware summary engine that translates complex graph logic into human-readable project briefs on hover.
 
 ---
 
-## 🧠 Intelligence & Analytics
+## 3. Technical Architecture
 
-### The Summary Cloud
-![Intelligence Report](./public/docs/Summary.png)
-HR logic can get complex. That’s why I added the **Summary Cloud**. Hover over the canvas to reveal a high-level plain-English breakdown of your entire workflow. One click lets you copy the summary to your clipboard for status updates or documentation.
+### Mock API Integration Layer
+The system implements a robust mock API (`src/api/client.ts`) that simulates production-grade backend interactions:
+*   **GET `/automations`**: Fetches dynamic parameters for automated step configurations.
+*   **POST `/simulate`**: Processes the entire workflow graph through a validation engine.
+*   **GET `/templates`**: Populates the workspace with pre-defined HR patterns.
 
-### Ready-to-Go Templates
-![Workflow Templates](./public/docs/Templates.png)
-I've pre-loaded the system with standard HR patterns (Onboarding, Leave Approval, Offboarding). These aren't just static images—they are fully functional, interactive graphs that you can apply with a single click.
+### Simulation & Logic Engine
+The simulation engine utilizes **Topological Sorting** to determine the correct execution order of nodes. It validates the graph for:
+*   Circular dependencies.
+*   Orphaned nodes.
+*   Incomplete configurations.
+*   Missing start/end nodes.
+
+### Frontend Stack
+*   **Core**: React 18 + TypeScript.
+*   **Canvas Engine**: React Flow.
+*   **State Management**: Zustand + Immer (supporting infinite Undo/Redo).
+*   **Styling**: Tailwind CSS + Shadcn UI.
+*   **Icons**: Lucide React.
 
 ---
 
-## 🛠️ How to Run
+## 4. Operational Guide
 
-1.  **Clone** the repository.
-2.  **Install**: `npm install`.
-3.  **Launch**: `npm run dev`.
-4.  **Explore**: Open `http://localhost:5173`. Use **`⌘K`** to start your first flow.
+### Essential Keyboard Shortcuts
+| Shortcut | Action |
+| :--- | :--- |
+| `⌘K` | Toggle Spotlight Search / Command Palette |
+| `⌘Z` | Undo last canvas action |
+| `⌘Y` | Redo last canvas action |
+| `S` | Enable Selection Mode |
+| `P` | Enable Pan (Hand) Mode |
+| `Del` | Delete selected node/edge |
+| `Esc` | Deselect current node |
+
+### Local Setup
+1.  **Extract** the project archive.
+2.  **Install**: Run `npm install` in the project root.
+3.  **Launch**: Run `npm run dev` to start the development server.
+4.  **Access**: Navigate to `http://localhost:5173`.
 
 ---
 
-## 💡 Final Thoughts on Architecture
-
-*   **State**: I chose **Zustand + Immer** for a lightweight yet robust state management system that supports infinite Undo/Redo.
-*   **Validation**: Every time you move a node, a background validator checks for orphaned edges, missing connections, or logic loops.
-*   **Branding**: The "Greptile Green" theme isn't just for show; it provides the high contrast needed for long-duration technical work.
-
-Developed with ❤️ for the Tredence Analytics HR Ops Team.
+Developed by the AxonHR Engineering Team for Tredence Analytics.
