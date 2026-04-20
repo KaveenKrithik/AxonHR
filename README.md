@@ -2,6 +2,8 @@
 
 <img src="./public/docs/logo.png" width="180" alt="AxonHR Logo" />
 
+**Live Demo: [axon-hr.vercel.app](https://axon-hr.vercel.app)**
+
 ## Introduction
 The AxonHR Workflow Designer is a high-fidelity prototype developed for the HR Automation Case Study. It provides a formal environment for the design, validation, and simulation of operational HR workflows through an interactive canvas interface.
 
