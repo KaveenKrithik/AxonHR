@@ -6,11 +6,35 @@ AxonHR is a high-fidelity, production-grade HR workflow automation module built 
 
 ---
 
+## 📋 Requirement Compliance Checklist
+
+The project was built to satisfy all the core requirements of the Case Study. Each functional requirement is mapped to its implementation below.
+
+### 1. Workflow Canvas (React Flow)
+**Requirement**: Implement a drag-and-drop canvas with five custom node types (Start, Task, Approval, Automated, End), connection edges, and node selection/deletion.
+![Requirement 1: Canvas](./public/docs/canvas.png)
+*   **Status**: Completed with high-fidelity visual feedback and sub-pixel grid system.
+
+### 2. Node Configuration Forms
+**Requirement**: Editable form panels for each node type with specific minimum fields (e.g., auto-approve threshold, assignee, due date).
+![Requirement 2: Forms](./public/docs/form_full.png)
+*   **Status**: Completed using controlled components and the **Greptile Green** design system.
+
+### 3. Mock API & Automated Actions
+**Requirement**: Integrate a mock API for `/automations` and dynamic parameter generation.
+![Requirement 3: API Integration](./public/docs/search_full.png)
+*   **Status**: Completed. Action parameters update dynamically based on the selected mock automation (e.g. Email vs. Slack).
+
+### 4. Simulation Sandbox
+**Requirement**: A testing panel that serializes the graph, validates structure, and displays execution logs.
+![Requirement 4: Sandbox](./public/docs/sandbox_full.png)
+*   **Status**: Completed with a **Topological-Sort** engine and real-time execution timeline.
+
+---
+
 ## Technical Architecture
 
-### 1. Workflow Life Cycle
-The following diagram illustrates how a user-defined workflow moves from the design canvas through to the simulation engine.
-
+### Workflow Life Cycle
 ```mermaid
 graph LR
     A[Start Node] --> B[Task/Approval Node]
@@ -21,47 +45,24 @@ graph LR
     F --> G[Execution Logs / Analytics]
 ```
 
-### 2. State Management Strategy
+### State Management Strategy
 The application utilizes a centralized **Zustand** store with **Immer** middleware. This architecture provides:
 *   **Atomic Updates**: Node data and edge connections are managed in a single source of truth.
 *   **Command History**: A snapshot-based stack allows for infinite **Undo/Redo** capabilities.
 *   **Serialization**: The entire workflow graph is serialized into a clean JSON structure for API consumption and persistence.
 
-### 3. Component Design System
-We implemented a **Modular Node Architecture** based on a shared `NodeShell` component.
-*   **Custom Form Generators**: The configuration panel uses a dynamic field-mapping system. For example, the Automated Step Node fetches its schema from the Mock API and renders inputs based on the required parameters.
-*   **Raycast-Styled UI**: The interface follows a premium dark-mode aesthetic with sub-pixel borders and glassmorphic elements.
-
 ---
 
 ## Core Features & Enhancements
 
-### Interactive Canvas & Toolbar
-![Floating Toolbar](./public/docs/toolbar.png)
-A React Flow powered workspace supporting drag-and-drop node placement, smooth edge connections, and precise zoom/pan controls via our specialized floating toolbar.
-
 ### Power-User Spotlight Search
 A dual-pane command palette (`Cmd + K`) for instant discovery of nodes and templates, featuring high-contrast previews and keyboard navigation.
 
-### Integrated Sandbox
-A real-time execution logger that provides a step-by-step timeline of the workflow. If enabled, the **Tredence Analytics Intelligence Report** generates a final performance summary at the conclusion of the flow.
+### Integrated Toolbar
+A React Flow powered workspace with precise zoom/pan controls via our specialized floating toolbar.
 
 ### Guided Onboarding
-A 9-step interactive tour that introduces users to the designer's features, terminating with a persistence flag in localStorage so it only appears once per user.
-
----
-
-## Project Structure
-
-```text
-src/
-├── api/          # Mock API client and simulation logic
-├── components/   # Atomic UI components and custom nodes
-├── store/        # Zustand state management (Workflow/UI)
-├── types/        # TypeScript interfaces and data registries
-├── utils/        # Graph validation and text-to-flow parsers
-└── index.css     # Design system tokens and Greptile Green theme
-```
+A 9-step interactive tour that introduces users to the designer's features, with persistent state in localStorage.
 
 ---
 
@@ -77,5 +78,5 @@ src/
 ## Design Decisions & Assumptions
 
 *   **Assumption**: No backend persistence was required, so we utilized localStorage for onboarding state and a memory-based store for workflows.
-*   **Decision**: We chose **Zustand** over Redux for its lightweight footprint and excellent performance with React Flow's frequent state updates.
-*   **Branding**: The application was rebranded to **Greptile Green** (`#00D084`) to represent a high-tech, modern SaaS aesthetic.
+*   **Decision**: We chose **Zustand** over Redux for its lightweight footprint and excellent performance.
+*   **Branding**: Rebranded to **Greptile Green** (`#00D084`) for a high-tech SaaS aesthetic.
