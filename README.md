@@ -44,10 +44,20 @@ The system provides specialized nodes with rigorous data field requirements:
 
 ---
 
-## 3. Sandbox Simulation
+---
+
+## 3. Sandbox Simulation & Execution Feedback
 <img src="./public/docs/Sandbox.png" width="800" alt="Simulation Results" />
 
-The Sandbox Simulation environment provides formal testing capabilities:
+To provide a fully reactive experience, the designer includes a real-time **Sandbox Simulation** feedback loop:
+
+### Execution Visuals
+*   **Live Status**: Nodes on the canvas respond instantly to logic execution with verified status icons (blue for running, green for passed, red for failed).
+*   **Tracing**: The execution log provides a high-fidelity audit trail for every node in the graph.
+
+<img src="./public/docs/Simulation_Running.png" width="400" alt="Simulation Running" /><img src="./public/docs/Simulation_Success.png" width="400" alt="Simulation Success" />
+
+### Technical Logic
 * **Serialization**: Complete graph state conversion to JSON for API delivery.
 * **Backend Integration**: Direct communication with the mock /simulate endpoint.
 * **Execution Trace**: Step-by-step timeline UI displaying node status and duration.
