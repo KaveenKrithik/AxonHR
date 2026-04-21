@@ -4,7 +4,7 @@ import { useUIStore } from "@/store/uiStore";
 import { useWorkflowStore } from "@/store/workflowStore";
 import { NODE_REGISTRY } from "@/types/nodeRegistry";
 import { getHRTemplates } from "@/api/client";
-import { Search, Command, CornerDownLeft, ChevronRight, LayoutTemplate, PlusCircle } from "lucide-react";
+import { Search, Command, CornerDownLeft, ChevronRight, LayoutTemplate, PlusCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const PATTERNS = [
@@ -50,7 +50,7 @@ export function SpotlightSearch() {
       list.push({
         id: "quick-build",
         label: "Quick Build: " + q,
-        description: "Generate a multi-node workflow from this text.",
+        description: "Generate a multi-node workflow from this text using AI-style parsing.",
         icon: "Zap",
         itemType: "command" as any,
       } as any);
@@ -202,6 +202,45 @@ export function SpotlightSearch() {
                 </div>
               </section>
             )}
+
+            {allItems.filter(item => item.itemType === 'command').length > 0 && (
+              <section>
+                <div className="px-3 py-2 text-[11px] font-medium text-[#555555] uppercase tracking-[0.1em]">Commands</div>
+                <div className="space-y-0.5 mt-1">
+                  {allItems.filter(item => item.itemType === 'command').map((item, i) => {
+                    const idx = nodeMatches.length + patternMatches.length + i;
+                    const isSelected = selectedIndex === idx;
+                    const Icon = (Icons as any)[item.icon] ?? Zap;
+                    return (
+                      <button
+                        key={item.id}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                        onClick={() => handleAction(item)}
+                        className={cn(
+                          "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors",
+                          isSelected ? "bg-[#2d2d2d]" : "hover:bg-[#252525]"
+                        )}
+                      >
+                        <div className={cn(
+                          "flex h-7 w-7 items-center justify-center rounded-md border",
+                          isSelected ? "bg-[#00D084] border-transparent text-black" : "bg-[#2a2a2a] border-[#3a3a3a] text-[#888888]"
+                        )}>
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <div className="flex-1 min-w-0 text-sm font-medium">
+                          <div className={isSelected ? "text-white" : "text-[#aaaaaa]"}>{item.label}</div>
+                        </div>
+                        {isSelected && (
+                          <div className="flex items-center gap-1 text-[10px] text-[#00D084] font-medium opacity-80">
+                            Run <CornerDownLeft className="h-2.5 w-2.5" />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
             
             {allItems.length === 0 && (
               <div className="h-full flex flex-col items-center justify-center text-[#444444] space-y-2 py-10">
@@ -223,8 +262,14 @@ export function SpotlightSearch() {
                          return <Icon className="h-8 w-8" />;
                        })()}
                     </div>
+                  ) : selectedItem.itemType === 'command' ? (
+                    <div className="p-3 rounded-xl bg-[#00D084] text-black">
+                      <Zap className="h-8 w-8" />
+                    </div>
                   ) : (
-                    <LayoutTemplate className="h-10 w-10 text-[#00D084]" />
+                    <div className="p-3 rounded-xl bg-[#2a2a2a] text-[#00D084]">
+                      <LayoutTemplate className="h-10 w-10" />
+                    </div>
                   )}
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{selectedItem.label}</h3>

@@ -8,16 +8,16 @@ import type {
 } from "@/types";
 
 export const StartNode = memo((p: NodeProps<StartNodeData>) => (
-  <NodeShell {...p} shape="pill" subtitle={p.data.title} />
+  <NodeShell {...p} subtitle={p.data.title} />
 ));
 export const EndNode = memo((p: NodeProps<EndNodeData>) => (
-  <NodeShell {...p} shape="pill" subtitle={p.data.endMessage} />
+  <NodeShell {...p} subtitle={p.data.endMessage} />
 ));
 export const TaskNode = memo((p: NodeProps<TaskNodeData>) => (
   <NodeShell {...p} subtitle={p.data.title} rightBadge={p.data.priority} />
 ));
 export const ApprovalNode = memo((p: NodeProps<ApprovalNodeData>) => (
-  <NodeShell {...p} shape="diamond" subtitle={p.data.approverRole ?? "no approver"} withYesNo />
+  <NodeShell {...p} subtitle={p.data.approverRole ?? "no approver"} withYesNo />
 ));
 export const AutomationNode = memo((p: NodeProps<AutomationNodeData>) => (
   <NodeShell {...p} subtitle={p.data.actionId ?? "no action"} />
