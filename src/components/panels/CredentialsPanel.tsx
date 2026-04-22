@@ -99,7 +99,7 @@ export function CredentialsPanel() {
                 <div className="text-sm font-medium">{c.name}</div>
                 <div className="text-xs text-muted-foreground capitalize">{c.type}</div>
                 <div className="text-[10px] text-muted-foreground mt-1 font-mono truncate">
-                  {Object.entries(c.config).slice(0, 2).map(([k, v]) => `${k}: ${maskCredential(v)}`).join(" · ")}
+                  {Object.entries(c.config || {}).slice(0, 2).map(([k, v]) => `${k}: ${maskCredential(v)}`).join(" · ")}
                 </div>
               </div>
               <button onClick={() => del(c.id)} className="h-7 w-7 inline-flex items-center justify-center rounded hover:bg-muted text-destructive">

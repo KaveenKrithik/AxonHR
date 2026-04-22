@@ -15,7 +15,7 @@ export const useCredentialsStore = create<CredentialsState>()(
   persist(
     (set, get) => ({
       credentials: [
-        { id: "default-smtp", name: "Corporate Gmail", type: "smtp", metadata: { host: "smtp.gmail.com", port: "587" } }
+        { id: "default-smtp", name: "Corporate Gmail", type: "smtp", config: { host: "smtp.gmail.com", port: "587" } }
       ],
       addCredential: (c) => {
         const id = nanoid(8);
