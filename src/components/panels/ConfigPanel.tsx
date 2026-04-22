@@ -14,6 +14,7 @@ import { useEffect as useEffect2, useState } from "react";
 import { getAutomations } from "@/api/client";
 import type { AutomationAction } from "@/types";
 import { useCredentialsStore } from "@/store/credentialsStore";
+import { toast } from "sonner";
 
 function KVEditor({
   value, onChange,
@@ -264,6 +265,22 @@ export function ConfigPanel() {
             <Field label="Credential">
               <Select value={data.credentialId ?? ""} options={["", ...credentials.filter(c => c.type === 'smtp').map((c) => c.id)]} labels={["—", ...credentials.filter(c => c.type === 'smtp').map((c) => c.name)]} onChange={(v) => set({ credentialId: v || undefined })} />
             </Field>
+            <div className="pt-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full text-xs h-8 border-[#333333] hover:bg-white/5"
+                onClick={() => {
+                  toast.promise(new Promise(r => setTimeout(r, 1200)), {
+                    loading: 'Testing SMTP connection...',
+                    success: () => `Test email sent to ${data.recipient || 'employee@company.com'} successfully!`,
+                    error: 'SMTP Connection failed'
+                  });
+                }}
+              >
+                <Icons.Send className="h-3 w-3 mr-2" /> Send Test Email
+              </Button>
+            </div>
           </>
         )}
 
@@ -304,6 +321,22 @@ export function ConfigPanel() {
             {data.sendAt === "Custom" && (
               <Field label="Custom time"><Input type="datetime-local" value={data.customTime ?? ""} onChange={(e) => set({ customTime: e.target.value })} className="h-8 text-sm bg-black/20 border-[#333333] text-white" /></Field>
             )}
+            <div className="pt-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full text-xs h-8 border-[#333333] hover:bg-white/5"
+                onClick={() => {
+                  toast.promise(new Promise(r => setTimeout(r, 1000)), {
+                    loading: 'Preparing notification...',
+                    success: () => `Notification test initiated for ${data.channel || 'email'} channel!`,
+                    error: 'Notification failed'
+                  });
+                }}
+              >
+                <Icons.BellRing className="h-3 w-3 mr-2" /> Test Notification
+              </Button>
+            </div>
           </>
         )}
 

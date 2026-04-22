@@ -72,7 +72,16 @@ export async function postSimulate(workflow: {
     } else if (n.type === "slack") {
       message = `Posted message to ${data.channel || "#general"}`;
     } else if (n.type === "email") {
-      message = `Sent email to ${data.recipient || "employee@company.com"}`;
+      const credId = data.credentialId;
+      if (credId) {
+        message = `Sent email to ${data.recipient || "employee@company.com"} via SMTP (Cred ID: ${credId})`;
+      } else {
+        message = `Sent email to ${data.recipient || "employee@company.com"} (Default gateway)`;
+      }
+    } else if (n.type === "notification") {
+      const channel = data.channel || "email";
+      const recipientCount = (data.recipients || []).length;
+      message = `Sent ${channel} notification to ${recipientCount} recipient(s)`;
     }
     const step: SimStep = {
       nodeId: n.id,
